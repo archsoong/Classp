@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Classroom Interactive - Neo Brutalism</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            'mono': ['Courier New', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Ensure Tailwind loads */
+    @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+
+    body {
+      font-family: 'Space Mono', monospace;
+      background-color: #FDE047;
+    }
+
+    /* Neo-brutalism custom styles */
+    .neo-btn {
+      font-weight: 900;
+      padding: 12px 24px;
+      border: 4px solid #000;
+      box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+      transition: all 0.1s;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .neo-btn:hover {
+      box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 1);
+      transform: translate(2px, 2px);
+    }
+
+    .neo-btn:active {
+      box-shadow: none;
+      transform: translate(4px, 4px);
+    }
+
+    .neo-card {
+      border: 4px solid #000;
+      box-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 1);
+      background-color: white;
+    }
+
+    .neo-input {
+      border: 4px solid #000;
+      padding: 12px;
+      font-weight: 900;
+      box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+      width: 100%;
+      text-transform: uppercase;
+    }
+
+    .neo-input:focus {
+      outline: none;
+      box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 1);
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    /* Color classes for neo brutalism */
+    .bg-neo-yellow {
+      background-color: #FDE047;
+    }
+
+    .bg-neo-red {
+      background-color: #EF4444;
+    }
+
+    .bg-neo-green {
+      background-color: #4ADE80;
+    }
+
+    .bg-neo-blue {
+      background-color: #60A5FA;
+    }
+
+    .bg-neo-purple {
+      background-color: #C084FC;
+    }
+
+    .bg-neo-pink {
+      background-color: #F9A8D4;
+    }
+
+    .bg-neo-orange {
+      background-color: #FB923C;
+    }
+
+    .bg-neo-cyan {
+      background-color: #67E8F9;
+    }
+
+    @keyframes pulse {
+      0% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.5;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+
+<body style="background-color: #FDE047; margin: 0; font-family: 'Space Mono', monospace;">
+  <!-- Login Page -->
+  <div id="loginPage" class="page active"
+    style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 16px;">
+    <div class="neo-card" style="padding: 32px; max-width: 400px; width: 100%; background-color: white;">
+      <div style="text-align: center; margin-bottom: 32px;">
+        <div
+          style="width: 80px; height: 80px; background-color: #EF4444; border: 4px solid #000; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; transform: rotate(3deg);">
+          CI
+        </div>
+        <h1 style="font-size: 36px; font-weight: 900; line-height: 1.2; margin: 0;">CLASSROOM<br>INTERACTIVE</h1>
+      </div>
+
+      <input type="text" id="userId" placeholder="ENTER YOUR ID" class="neo-input"
+        style="margin-bottom: 24px; background-color: #93C5FD;">
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <button onclick="login('teacher')" class="neo-btn bg-neo-green"
+          style="background-color: #4ADE80; font-size: 18px;">
+          I'M A<br>TEACHER
+        </button>
+        <button onclick="login('student')" class="neo-btn bg-neo-purple"
+          style="background-color: #C084FC; font-size: 18px;">
+          I'M A<br>STUDENT
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Teacher Dashboard -->
+  <div id="teacherDashboard" class="page" style="min-height: 100vh; padding: 16px;">
+    <header class="neo-card"
+      style="padding: 16px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; background-color: #FB923C;">
+      <h2 style="font-size: 24px; font-weight: 900; margin: 0;">TEACHER: <span id="teacherId">ID123</span></h2>
+      <button onclick="logout()" class="neo-btn" style="background-color: #EF4444; color: white;">LOGOUT</button>
+    </header>
+
+    <div style="max-width: 1200px; margin: 0 auto;">
+      <div style="margin-bottom: 24px;">
+        <button onclick="toggleCreateClass()" class="neo-btn"
+          style="background-color: #4ADE80; font-size: 24px; width: 100%; max-width: 400px;">
+          + CREATE NEW CLASS
+        </button>
+        <div id="createClassForm" style="display: none; margin-top: 16px;" class="neo-card">
+          <div style="padding: 16px;">
+            <input type="text" id="className" placeholder="CLASS NAME" class="neo-input"
+              style="margin-bottom: 16px; background-color: #FEF3C7;">
+            <div style="display: flex; gap: 16px;">
+              <button onclick="createClass()" class="neo-btn" style="background-color: #4ADE80;">CREATE</button>
+              <button onclick="toggleCreateClass()" class="neo-btn" style="background-color: #D1D5DB;">CANCEL</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3 style="font-size: 32px; font-weight: 900; margin-bottom: 16px;">MY CLASSES</h3>
+      <div id="classList"
+        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 24px;">
+        <!-- Sample class card -->
+        <div class="neo-card" style="padding: 24px; background-color: #F9A8D4;">
+          <h4 style="font-size: 24px; font-weight: 900; margin: 0 0 8px 0;">MATH 101</h4>
+          <div style="margin-bottom: 16px; line-height: 1.8;">
+            <p style="font-weight: 700; margin: 4px 0;">CODE: <span
+                style="background-color: white; padding: 4px 8px; border: 2px solid #000;">ABC123</span>
+              <button class="neo-btn"
+                style="padding: 4px 8px; font-size: 12px; margin-left: 8px; background-color: #60A5FA;">COPY</button>
+            </p>
+            <p style="margin: 4px 0;">STUDENTS: <span style="font-weight: 900;">25</span></p>
+            <p style="margin: 4px 0;">LAST ACTIVE: <span style="font-weight: 900;">2 HOURS AGO</span></p>
+            <p style="margin: 4px 0;">QUESTIONS: <span style="font-weight: 900;">15</span></p>
+            <p style="margin: 4px 0;">AVG RATE: <span style="font-weight: 900; color: #16A34A;">85%</span></p>
+          </div>
+          <button onclick="enterClass('ABC123')" class="neo-btn"
+            style="background-color: #3B82F6; color: white; width: 100%;">
+            ENTER CLASS
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Teacher Classroom -->
+  <div id="teacherClassroom" class="page" style="min-height: 100vh; padding: 16px;">
+    <header class="neo-card" style="padding: 16px; margin-bottom: 24px; background-color: #FB923C;">
+      <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;">
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <button onclick="showPage('teacherDashboard')" class="neo-btn" style="background-color: white; padding: 8px;">
+            ← BACK
+          </button>
+          <h2 style="font-size: 24px; font-weight: 900; margin: 0;">MATH 101 (ABC123)</h2>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div
+            style="width: 12px; height: 12px; background-color: #10B981; border: 2px solid #000; border-radius: 50%;">
+          </div>
+          <span style="font-weight: 900;">15 ACTIVE</span>
+        </div>
+      </div>
+    </header>
+
+    <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 24px;">
+      <!-- Question Creation Panel -->
+      <div class="neo-card" style="padding: 24px; background-color: #67E8F9;">
+        <h3 style="font-size: 24px; font-weight: 900; margin: 0 0 16px 0;">CREATE QUESTION</h3>
+        <textarea placeholder="TYPE YOUR QUESTION HERE..." class="neo-input"
+          style="min-height: 100px; margin-bottom: 16px; background-color: white; resize: vertical;"></textarea>
+
+        <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+          <button onclick="setQuestionType('mc')" class="neo-btn" style="background-color: #FDE047; flex: 1;"
+            id="mcBtn">
+            [MC]
+          </button>
+          <button onclick="setQuestionType('text')" class="neo-btn" style="background-color: #D1D5DB; flex: 1;"
+            id="textBtn">
+            [TEXT]
+          </button>
+        </div>
+
+        <div id="mcOptions" style="margin-bottom: 16px;">
+          <input type="text" placeholder="OPTION A" class="neo-input"
+            style="margin-bottom: 8px; background-color: white;">
+          <input type="text" placeholder="OPTION B" class="neo-input"
+            style="margin-bottom: 8px; background-color: white;">
+          <input type="text" placeholder="OPTION C" class="neo-input"
+            style="margin-bottom: 8px; background-color: white;">
+          <input type="text" placeholder="OPTION D" class="neo-input" style="background-color: white;">
+        </div>
+
+        <div id="textOptions" style="display: none; margin-bottom: 16px;">
+          <p
+            style="font-weight: 700; text-align: center; padding: 16px; background-color: white; border: 4px solid #000;">
+            STUDENTS WILL TYPE THEIR ANSWER
+          </p>
+        </div>
+
+        <button onclick="publishQuestion()" class="neo-btn"
+          style="background-color: #10B981; color: white; width: 100%; font-size: 20px;">
+          PUBLISH QUESTION
+        </button>
+      </div>
+
+      <!-- Live Status / Results Panel -->
+      <div>
+        <!-- Active Question Display -->
+        <div id="liveStatus" class="neo-card"
+          style="padding: 24px; margin-bottom: 24px; background-color: #C084FC; display: none;">
+          <h3 style="font-size: 24px; font-weight: 900; margin: 0 0 16px 0;">LIVE STATUS</h3>
+          <p style="font-weight: 700; margin-bottom: 8px;">QUESTION: What is 2+2?</p>
+          <div style="margin-bottom: 16px;">
+            <p style="font-weight: 700; margin-bottom: 8px;">RESPONSES: 12/15 (80%)</p>
+            <div style="width: 100%; background-color: white; border: 4px solid #000; height: 32px;">
+              <div style="background-color: #10B981; height: 100%; width: 80%; border-right: 4px solid #000;"></div>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 16px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+              <span style="font-weight: 700;">4:</span>
+              <div style="flex: 1; background-color: white; border: 4px solid #000; height: 32px;">
+                <div style="background-color: #3B82F6; height: 100%; width: 83%;"></div>
+              </div>
+              <span style="font-weight: 700;">10 (83%)</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-weight: 700;">3:</span>
+              <div style="flex: 1; background-color: white; border: 4px solid #000; height: 32px;">
+                <div style="background-color: #3B82F6; height: 100%; width: 8%;"></div>
+              </div>
+              <span style="font-weight: 700;">1 (8%)</span>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 16px;">
+            <button class="neo-btn" style="background-color: #EF4444; color: white; flex: 1;">END QUESTION</button>
+            <button class="neo-btn" style="background-color: #FDE047; flex: 1;">SHOW TO STUDENTS</button>
+          </div>
+        </div>
+
+        <!-- Question History -->
+        <div class="neo-card" style="padding: 24px; background-color: #9CA3AF;">
+          <h3 style="font-size: 24px; font-weight: 900; margin: 0 0 16px 0;">PREVIOUS QUESTIONS</h3>
+          <div>
+            <div class="neo-card" style="padding: 12px; margin-bottom: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: 700;">Q1: What is 2+2?</span>
+                <div style="display: flex; gap: 8px; font-size: 14px;">
+                  <span style="font-weight: 700;">15/15</span>
+                  <span>2min ago</span>
+                </div>
+              </div>
+            </div>
+            <div class="neo-card" style="padding: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: 700;">Q2: Capital of France?</span>
+                <div style="display: flex; gap: 8px; font-size: 14px;">
+                  <span style="font-weight: 700;">14/15</span>
+                  <span>5min ago</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Student Classroom -->
+  <div id="studentClassroom" class="page"
+    style="min-height: 100vh; padding: 16px; display: flex; align-items: center; justify-content: center;">
+    <!-- Waiting State -->
+    <div id="studentWaiting" class="neo-card" style="padding: 32px; max-width: 400px; width: 100%; text-align: center;">
+      <h2 style="font-size: 32px; font-weight: 900; margin: 0 0 8px 0;">MATH 101</h2>
+      <p style="font-weight: 700; margin-bottom: 24px;">TEACHER: MR. SMITH</p>
+
+      <div style="margin: 32px 0;">
+        <div style="font-size: 64px; margin-bottom: 16px; animation: pulse 2s infinite;">⏳</div>
+        <p style="font-size: 20px; font-weight: 700;">WAITING FOR QUESTION...</p>
+      </div>
+
+      <p style="font-weight: 700; margin-bottom: 24px;">CONNECTED: 15 STUDENTS</p>
+
+      <button onclick="logout()" class="neo-btn" style="background-color: #EF4444; color: white; width: 100%;">
+        LEAVE CLASS
+      </button>
+    </div>
+
+    <!-- Active Question State -->
+    <div id="studentQuestion" class="neo-card" style="padding: 32px; max-width: 400px; width: 100%; display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <h2 style="font-size: 24px; font-weight: 900; margin: 0;">MATH 101</h2>
+        <span class="neo-card"
+          style="background-color: #FDE047; padding: 4px 12px; font-size: 14px; font-weight: 700;">QUESTION 3</span>
+      </div>
+
+      <div style="margin-bottom: 24px;">
+        <p style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">What is 2+2?</p>
+
+        <div>
+          <label class="neo-card"
+            style="padding: 16px; display: flex; align-items: center; cursor: pointer; margin-bottom: 12px; background-color: #E5E7EB;">
+            <input type="radio" name="answer" style="width: 16px; height: 16px; margin-right: 12px;">
+            <span style="font-weight: 700;">2</span>
+          </label>
+          <label class="neo-card"
+            style="padding: 16px; display: flex; align-items: center; cursor: pointer; margin-bottom: 12px; background-color: #E5E7EB;">
+            <input type="radio" name="answer" style="width: 16px; height: 16px; margin-right: 12px;">
+            <span style="font-weight: 700;">3</span>
+          </label>
+          <label class="neo-card"
+            style="padding: 16px; display: flex; align-items: center; cursor: pointer; margin-bottom: 12px; background-color: #93C5FD;">
+            <input type="radio" name="answer" style="width: 16px; height: 16px; margin-right: 12px;" checked>
+            <span style="font-weight: 700;">4</span>
+          </label>
+          <label class="neo-card"
+            style="padding: 16px; display: flex; align-items: center; cursor: pointer; background-color: #E5E7EB;">
+            <input type="radio" name="answer" style="width: 16px; height: 16px; margin-right: 12px;">
+            <span style="font-weight: 700;">5</span>
+          </label>
+        </div>
+      </div>
+
+      <button onclick="submitAnswer()" class="neo-btn"
+        style="background-color: #10B981; color: white; width: 100%; font-size: 20px;">
+        SUBMIT ANSWER
+      </button>
+    </div>
+
+    <!-- Results State -->
+    <div id="studentResults" class="neo-card" style="padding: 32px; max-width: 400px; width: 100%; display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <h2 style="font-size: 24px; font-weight: 900; margin: 0;">MATH 101</h2>
+        <span class="neo-card"
+          style="background-color: #FDE047; padding: 4px 12px; font-size: 14px; font-weight: 700;">QUESTION 3</span>
+      </div>
+
+      <p style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">What is 2+2?</p>
+
+      <div style="margin-bottom: 24px;">
+        <h3 style="font-weight: 900; margin-bottom: 12px;">RESULTS:</h3>
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <span style="font-weight: 700;">4:</span>
+            <div style="flex: 1; background-color: #E5E7EB; border: 4px solid #000; height: 32px;">
+              <div style="background-color: #10B981; height: 100%; width: 83%;"></div>
+            </div>
+            <span style="font-weight: 700;">10 (83%) ← YOU</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-weight: 700;">3:</span>
+            <div style="flex: 1; background-color: #E5E7EB; border: 4px solid #000; height: 32px;">
+              <div style="background-color: #6B7280; height: 100%; width: 8%;"></div>
+            </div>
+            <span style="font-weight: 700;">1 (8%)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="neo-card" style="background-color: #86EFAC; padding: 16px; text-align: center; margin-bottom: 24px;">
+        <p style="font-weight: 900; font-size: 18px; margin: 0;">✓ YOUR ANSWER WAS CORRECT!</p>
+      </div>
+
+      <p style="text-align: center; font-weight: 700; animation: pulse 2s infinite;">WAITING FOR NEXT QUESTION...</p>
+    </div>
+  </div>
+
+  <script>
+    // Simple page navigation
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+      });
+      document.getElementById(pageId).classList.add('active');
+    }
+
+    // Login function
+    function login(type) {
+      const userId = document.getElementById('userId').value;
+      if (!userId) {
+        alert('Please enter your ID');
+        return;
+      }
+
+      if (type === 'teacher') {
+        document.getElementById('teacherId').textContent = userId;
+        showPage('teacherDashboard');
+      } else {
+        // For MVP, directly go to student classroom
+        showPage('studentClassroom');
+      }
+    }
+
+    // Logout function
+    function logout() {
+      showPage('loginPage');
+      document.getElementById('userId').value = '';
+    }
+
+    // Toggle create class form
+    function toggleCreateClass() {
+      const form = document.getElementById('createClassForm');
+      form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // Create class
+    function createClass() {
+      const className = document.getElementById('className').value;
+      if (!className) {
+        alert('Please enter a class name');
+        return;
+      }
+      // In real app, would create class and update list
+      alert(`Class "${className}" created with code: XYZ789`);
+      toggleCreateClass();
+      document.getElementById('className').value = '';
+    }
+
+    // Enter class
+    function enterClass(classCode) {
+      showPage('teacherClassroom');
+    }
+
+    // Question type toggle
+    function setQuestionType(type) {
+      if (type === 'mc') {
+        document.getElementById('mcBtn').style.backgroundColor = '#FDE047';
+        document.getElementById('textBtn').style.backgroundColor = '#D1D5DB';
+        document.getElementById('mcOptions').style.display = 'block';
+        document.getElementById('textOptions').style.display = 'none';
+      } else {
+        document.getElementById('textBtn').style.backgroundColor = '#FDE047';
+        document.getElementById('mcBtn').style.backgroundColor = '#D1D5DB';
+        document.getElementById('textOptions').style.display = 'block';
+        document.getElementById('mcOptions').style.display = 'none';
+      }
+    }
+
+    // Publish question (simulated)
+    function publishQuestion() {
+      document.getElementById('liveStatus').style.display = 'block';
+      // Simulate student view change
+      setTimeout(() => {
+        if (document.getElementById('studentClassroom').classList.contains('active')) {
+          document.getElementById('studentWaiting').style.display = 'none';
+          document.getElementById('studentQuestion').style.display = 'block';
+        }
+      }, 1000);
+    }
+
+    // Submit answer (student)
+    function submitAnswer() {
+      document.getElementById('studentQuestion').style.display = 'none';
+      document.getElementById('studentResults').style.display = 'block';
+    }
+
+    // Add some interactive animations
+    document.querySelectorAll('input[type="radio"]').forEach(radio => {
+      radio.addEventListener('change', function () {
+        document.querySelectorAll('label').forEach(label => {
+          if (label.contains(radio)) {
+            label.style.backgroundColor = '#93C5FD';
+          } else if (label.querySelector('input[type="radio"]')) {
+            label.style.backgroundColor = '#E5E7EB';
+          }
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>
