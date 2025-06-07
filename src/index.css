@@ -13,7 +13,7 @@
 html,
 body {
   font-family: 'Space Mono', monospace;
-  background-color: #FDE047;
+  background-color: #FFFEF5;
   line-height: 1.4;
   height: 100%;
 }
@@ -30,17 +30,17 @@ body {
   align-items: center;
   justify-content: center;
   padding: 16px;
-  background-color: #FDE047;
+  background-color: #FFFEF5;
 }
 
 .neo-page {
   min-height: 100vh;
   padding: 16px;
-  background-color: #FDE047;
+  background-color: #FFFEF5;
 }
 
 .neo-header {
-  background-color: #FB923C;
+  background-color: white;
   border: 4px solid #000;
   box-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 1);
   padding: 16px;
@@ -283,15 +283,15 @@ body {
 }
 
 .bg-neo-red {
-  background-color: #EF4444;
+  background-color: #FF0000;
 }
 
 .bg-neo-green {
-  background-color: #4ADE80;
+  background-color: #00FF66;
 }
 
 .bg-neo-blue {
-  background-color: #60A5FA;
+  background-color: #0066FF;
 }
 
 .bg-neo-purple {
@@ -299,11 +299,11 @@ body {
 }
 
 .bg-neo-pink {
-  background-color: #F9A8D4;
+  background-color: #FF0066;
 }
 
 .bg-neo-orange {
-  background-color: #FB923C;
+  background-color: #FF9900;
 }
 
 .bg-neo-cyan {
@@ -311,7 +311,7 @@ body {
 }
 
 .bg-neo-gray {
-  background-color: #9CA3AF;
+  background-color: #666666;
 }
 
 .bg-neo-white {
@@ -327,7 +327,7 @@ body {
 .neo-logo {
   width: 80px;
   height: 80px;
-  background-color: #EF4444;
+  background-color: #0066FF;
   border: 4px solid #000;
   display: flex;
   align-items: center;
@@ -336,6 +336,7 @@ body {
   font-weight: 900;
   transform: rotate(3deg);
   margin: 0 auto 16px;
+  color: black;
 }
 
 .neo-progress {

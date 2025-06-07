@@ -5,107 +5,75 @@ interface LoginPageProps {
 }
 
 const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
-  const [userId, setUserId] = useState('');
-  const [showClassCodeInput, setShowClassCodeInput] = useState(false);
-  const [classCode, setClassCode] = useState('');
+  const [teacherId, setTeacherId] = useState('');
+  const [error, setError] = useState('');
+
+  // Validate teacher ID format (alphanumeric, 3-20 chars)
+  const validateTeacherId = (id: string): boolean => {
+    return /^[a-zA-Z0-9]{3,20}$/.test(id);
+  };
 
   const handleTeacherLogin = () => {
-    if (!userId.trim()) {
-      alert('Please enter your ID');
+    setError('');
+    
+    if (!teacherId.trim()) {
+      setError('Please enter your Teacher ID');
       return;
     }
-    if (userId.length < 3 || userId.length > 20 || !/^[a-zA-Z0-9]+$/.test(userId)) {
-      alert('ID must be 3-20 alphanumeric characters');
+    
+    if (!validateTeacherId(teacherId)) {
+      setError('Teacher ID must be 3-20 alphanumeric characters');
       return;
     }
-    onLogin('teacher', userId);
+    
+    // Simulate teacher authentication - in real app, this would check against database
+    onLogin('teacher', teacherId);
   };
 
-  const handleStudentLogin = () => {
-    if (!userId.trim()) {
-      alert('Please enter your ID');
-      return;
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleTeacherLogin();
     }
-    if (userId.length < 3 || userId.length > 20 || !/^[a-zA-Z0-9]+$/.test(userId)) {
-      alert('ID must be 3-20 alphanumeric characters');
-      return;
-    }
-    setShowClassCodeInput(true);
-  };
-
-  const handleJoinClass = () => {
-    if (!classCode.trim()) {
-      alert('Please enter class code');
-      return;
-    }
-    onLogin('student', userId, classCode);
   };
 
   return (
     <div className="neo-container">
       <div className="neo-card neo-p-8 neo-max-w-md neo-w-full bg-neo-white">
+        {/* App Logo and Branding */}
         <div className="neo-text-center neo-mb-8">
-          <div className="neo-logo">CI</div>
+          <div className="neo-logo">CP</div>
           <h1 className="neo-text-4xl neo-font-black">
-            CLASSROOM<br />INTERACTIVE
+            Classp
           </h1>
         </div>
 
-        {!showClassCodeInput ? (
-          <>
-            <input
-              type="text"
-              value={userId}
-              onChange={(e) => setUserId(e.target.value)}
-              placeholder="ENTER YOUR ID"
-              className="neo-input bg-neo-blue neo-mb-6"
-              maxLength={20}
-            />
+        {/* Teacher Login Form */}
+        <div className="neo-mb-6">
+          <input
+            type="text"
+            value={teacherId}
+            onChange={(e) => setTeacherId(e.target.value)}
+            onKeyPress={handleKeyPress}
+            placeholder="Enter Teacher ID"
+            className="neo-input neo-mb-4"
+            maxLength={20}
+            style={{ textTransform: 'none' }}
+          />
+          
+          <button
+            onClick={handleTeacherLogin}
+            className="neo-btn neo-w-full"
+            style={{ backgroundColor: '#0066FF', color: 'black' }}
+          >
+            Login
+          </button>
+        </div>
 
-            <div className="neo-grid neo-grid-2">
-              <button
-                onClick={handleTeacherLogin}
-                className="neo-btn bg-neo-green neo-text-xl"
-              >
-                I'M A<br />TEACHER
-              </button>
-              <button
-                onClick={handleStudentLogin}
-                className="neo-btn bg-neo-purple neo-text-xl"
-              >
-                I'M A<br />STUDENT
-              </button>
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="neo-mb-6">
-              <p className="neo-font-bold neo-mb-4">STUDENT: {userId}</p>
-              <input
-                type="text"
-                value={classCode}
-                onChange={(e) => setClassCode(e.target.value.toUpperCase())}
-                placeholder="ENTER CLASS CODE"
-                className="neo-input bg-neo-cyan"
-                maxLength={6}
-              />
-            </div>
-
-            <div className="neo-grid neo-grid-2">
-              <button
-                onClick={handleJoinClass}
-                className="neo-btn bg-neo-green"
-              >
-                JOIN CLASS
-              </button>
-              <button
-                onClick={() => setShowClassCodeInput(false)}
-                className="neo-btn bg-neo-gray"
-              >
-                BACK
-              </button>
-            </div>
-          </>
+        {/* Error Display */}
+        {error && (
+          <div className="neo-text-center" style={{ color: '#FF0000', fontWeight: 'bold' }}>
+            {error}
+          </div>
         )}
       </div>
     </div>
