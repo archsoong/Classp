@@ -165,10 +165,10 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
         <div className="neo-mb-6">
           <button
             onClick={showCreateClassModal}
-            className="neo-btn-lg bg-neo-create-manage"
+            className="neo-btn neo-btn-lg bg-neo-create-manage"
             style={{ maxWidth: '400px', color: 'black' }}
           >
-            + Create New Class
+            + CREATE NEW CLASS
           </button>
         </div>
 
@@ -207,10 +207,15 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
         ) : (
           <div className="neo-grid neo-grid-3">
             {getFilteredClasses().map((classItem) => (
-              <div key={classItem.id} className="neo-card neo-p-6 bg-neo-surface">
-                <div className="neo-flex-between neo-mb-4">
-                  <h4 className="neo-text-2xl neo-font-black">{classItem.name}</h4>
+              <div key={classItem.id} className="neo-card neo-p-6 bg-neo-surface" style={{ position: 'relative' }}>
+                {/* Status badge in top right corner */}
+                <div style={{ position: 'absolute', top: '16px', right: '16px' }}>
                   {getStatusBadge(classItem.status)}
+                </div>
+
+                {/* Class name */}
+                <div className="neo-mb-4">
+                  <h4 className="neo-text-2xl neo-font-black" style={{ marginRight: '120px' }}>{classItem.name}</h4>
                 </div>
 
                 <div className="neo-mb-4" style={{ lineHeight: '1.6' }}>
@@ -222,12 +227,15 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
                   </p>
 
                   <p style={{ margin: '4px 0' }}>
-                    <span className="neo-font-bold">{classItem.createdAt} • {classItem.students} students</span>
+                    <span className="neo-font-bold">Date:</span> {classItem.createdAt} • <span className="neo-font-bold">{classItem.questions} questions</span>
                   </p>
 
-                  <p style={{ margin: '4px 0' }}>
-                    <span className="neo-font-bold">{classItem.questions} questions</span>
-                  </p>
+                  {/* Only show students count for ended classes */}
+                  {classItem.status === 'ended' && (
+                    <p style={{ margin: '4px 0' }}>
+                      <span className="neo-font-bold">Students:</span> {classItem.students}
+                    </p>
+                  )}
                 </div>
 
                 <div className="neo-flex neo-gap-2">

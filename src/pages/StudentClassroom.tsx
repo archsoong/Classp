@@ -212,11 +212,8 @@ const StudentClassroom: React.FC<StudentClassroomProps> = ({
           {renderHeader()}
           
           <div className="neo-card neo-p-6 bg-neo-accent2 neo-mb-6">
-            <div className="neo-flex-between neo-mb-4">
+            <div className="neo-mb-4">
               <h2 className="neo-text-2xl neo-font-black">Question {currentQuestion.questionNumber}</h2>
-              <span className="neo-card-sm neo-p-2 bg-neo-accent1 neo-font-black" style={{ padding: '4px 8px' }}>
-                {currentQuestion.type === 'mc' ? 'Multiple Choice' : 'Text Answer'}
-              </span>
             </div>
 
             <p className="neo-text-xl neo-font-bold neo-mb-6">{currentQuestion.text}</p>

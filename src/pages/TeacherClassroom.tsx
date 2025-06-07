@@ -218,12 +218,16 @@ const TeacherClassroom: React.FC<TeacherClassroomProps> = ({
                 ) : (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                     {questionHistory.map((question, index) => (
-                      <div key={question.id} className="neo-card neo-p-4 bg-neo-surface">
-                        <div className="neo-flex-between neo-mb-2">
-                          <span className="neo-font-bold">Q{questionHistory.length - index}: {question.text}</span>
+                      <div key={question.id} className="neo-card neo-p-4 bg-neo-surface" style={{ position: 'relative' }}>
+                        {/* Answer type label in top right corner */}
+                        <div style={{ position: 'absolute', top: '16px', right: '16px' }}>
                           <span className="neo-card-sm neo-p-2 bg-neo-info" style={{ padding: '4px 8px' }}>
                             {question.type === 'mc' ? 'MC' : 'TEXT'}
                           </span>
+                        </div>
+                        
+                        <div className="neo-mb-2">
+                          <span className="neo-font-bold" style={{ marginRight: '80px' }}>Q{questionHistory.length - index}: {question.text}</span>
                         </div>
                         <div className="neo-flex-between">
                           <span>Responses: {question.responses}/{question.totalStudents}</span>
@@ -250,8 +254,15 @@ const TeacherClassroom: React.FC<TeacherClassroomProps> = ({
                 </button>
               </div>
 
-              <div className="neo-card neo-p-4 bg-neo-surface neo-mb-4">
-                <p className="neo-text-xl neo-font-bold neo-mb-4">{activeQuestion.text}</p>
+              <div className="neo-card neo-p-4 bg-neo-surface neo-mb-4" style={{ position: 'relative' }}>
+                {/* Answer type label in top right corner */}
+                <div style={{ position: 'absolute', top: '16px', right: '16px' }}>
+                  <span className="neo-card-sm neo-p-2 bg-neo-info" style={{ padding: '4px 8px' }}>
+                    {activeQuestion.type === 'mc' ? 'MC' : 'TEXT'}
+                  </span>
+                </div>
+                
+                <p className="neo-text-xl neo-font-bold neo-mb-4" style={{ marginRight: '80px' }}>{activeQuestion.text}</p>
                 
                 {activeQuestion.type === 'mc' && activeQuestion.options && (
                   <div className="neo-mb-4">
