@@ -82,7 +82,7 @@ const StudentJoinPage: React.FC<StudentJoinPageProps> = ({
           value={studentName}
           onChange={(e) => setStudentName(e.target.value)}
           placeholder="Your Name"
-          className="neo-input neo-mb-4"
+          className="neo-input neo-mb-4 bg-neo-accent1"
           style={{ textTransform: 'none' }}
         />
         
@@ -91,7 +91,7 @@ const StudentJoinPage: React.FC<StudentJoinPageProps> = ({
           value={studentId}
           onChange={(e) => setStudentId(e.target.value)}
           placeholder="Student ID"
-          className="neo-input neo-mb-4"
+          className="neo-input neo-mb-4 bg-neo-accent2"
           style={{ textTransform: 'none' }}
         />
         
@@ -100,14 +100,13 @@ const StudentJoinPage: React.FC<StudentJoinPageProps> = ({
           value={classCode}
           onChange={(e) => setClassCode(e.target.value.toUpperCase())}
           placeholder="Class Code"
-          className="neo-input neo-mb-4"
+          className="neo-input neo-mb-4 bg-neo-info"
         />
       </div>
 
       <button
         onClick={handleJoinClass}
-        className="neo-btn neo-w-full neo-mb-4"
-        style={{ backgroundColor: '#00FF66', color: 'black' }}
+        className="neo-btn neo-btn-success neo-w-full neo-mb-4"
       >
         Join Class
       </button>
@@ -124,8 +123,7 @@ const StudentJoinPage: React.FC<StudentJoinPageProps> = ({
 
       <button
         onClick={onBackToHome}
-        className="neo-btn neo-w-full"
-        style={{ backgroundColor: '#666666', color: 'white' }}
+        className="neo-btn neo-btn-muted neo-w-full"
       >
         Back to Home
       </button>
@@ -142,8 +140,7 @@ const StudentJoinPage: React.FC<StudentJoinPageProps> = ({
 
       <button
         onClick={handleRefresh}
-        className="neo-btn neo-w-full"
-        style={{ backgroundColor: '#666666', color: 'white' }}
+        className="neo-btn neo-btn-info neo-w-full"
       >
         Refresh
       </button>
@@ -159,7 +156,7 @@ const StudentJoinPage: React.FC<StudentJoinPageProps> = ({
 
   return (
     <div className="neo-container">
-      <div className="neo-card neo-p-8 neo-max-w-md neo-w-full bg-neo-white">
+      <div className="neo-card neo-p-8 neo-max-w-md neo-w-full bg-neo-surface">
         {/* App Logo and Branding */}
         <div className="neo-text-center neo-mb-8">
           <div className="neo-logo">CP</div>
@@ -174,7 +171,7 @@ const StudentJoinPage: React.FC<StudentJoinPageProps> = ({
 
         {/* Error Display */}
         {error && (
-          <div className="neo-text-center neo-mb-4" style={{ color: '#FF0000', fontWeight: 'bold' }}>
+          <div className="neo-text-center neo-mb-4 neo-card-sm neo-p-4 bg-neo-error" style={{ color: 'white', fontWeight: 'bold' }}>
             {error}
           </div>
         )}
@@ -183,8 +180,8 @@ const StudentJoinPage: React.FC<StudentJoinPageProps> = ({
         <div className="neo-text-center">
           <button
             onClick={onBackToHome}
-            className="neo-btn-sm"
-            style={{ backgroundColor: 'transparent', border: 'none', textDecoration: 'underline', color: '#666666' }}
+            className="neo-btn-sm neo-btn-muted"
+            style={{ backgroundColor: 'transparent', border: 'none', textDecoration: 'underline' }}
           >
             ← Back to Home
           </button>

@@ -38,7 +38,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
 
   return (
     <div className="neo-container">
-      <div className="neo-card neo-p-8 neo-max-w-md neo-w-full bg-neo-white">
+      <div className="neo-card neo-p-8 neo-max-w-md neo-w-full bg-neo-surface">
         {/* App Logo and Branding */}
         <div className="neo-text-center neo-mb-8">
           <div className="neo-logo">CP</div>
@@ -55,15 +55,14 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
             onChange={(e) => setTeacherId(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Enter Teacher ID"
-            className="neo-input neo-mb-4"
+            className="neo-input neo-mb-4 bg-neo-accent1"
             maxLength={20}
             style={{ textTransform: 'none' }}
           />
           
           <button
             onClick={handleTeacherLogin}
-            className="neo-btn neo-w-full"
-            style={{ backgroundColor: '#0066FF', color: 'black' }}
+            className="neo-btn neo-btn-primary neo-w-full"
           >
             Login
           </button>
@@ -71,7 +70,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
 
         {/* Error Display */}
         {error && (
-          <div className="neo-text-center" style={{ color: '#FF0000', fontWeight: 'bold' }}>
+          <div className="neo-text-center neo-card-sm neo-p-4 bg-neo-error" style={{ color: 'white', fontWeight: 'bold' }}>
             {error}
           </div>
         )}

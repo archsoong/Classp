@@ -1,0 +1,10 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+- Never create any files for textures, models, or sounds. This are to be provided by the User.
+- Do not try to do anything I did not request, only do what I say, literally.
+- Do not to create new files as a solution, modify existing files instead, ask for permission if needed to.
+- Keep it short and minimal modification.
+- Always write comments.

@@ -163,7 +163,7 @@ const StudentClassroom: React.FC<StudentClassroomProps> = ({
   };
 
   const renderHeader = () => (
-    <div className="neo-mb-4" style={{ padding: '16px', backgroundColor: 'white', border: '4px solid black', boxShadow: '4px 4px 0px 0px rgba(0, 0, 0, 1)' }}>
+    <div className="neo-mb-4 neo-card-sm neo-p-4 bg-neo-light-purple" style={{ border: '4px solid black', boxShadow: '4px 4px 0px 0px rgba(0, 0, 0, 1)' }}>
       <div className="neo-flex-between neo-mb-2">
         <span className="neo-font-bold" style={{ fontSize: '14px' }}>Class: {className}</span>
         <span className="neo-font-bold" style={{ fontSize: '14px' }}>Hi, {studentName}</span>
@@ -171,7 +171,7 @@ const StudentClassroom: React.FC<StudentClassroomProps> = ({
       <div className="neo-flex-between">
         <span style={{ fontSize: '12px' }}>Code: {classCode}</span>
         <div className="neo-status">
-          <div className={`neo-status-dot ${isConnected ? 'neo-status-online' : ''}`} style={{ backgroundColor: isConnected ? '#00FF66' : '#FF0000' }}></div>
+          <div className={`neo-status-dot ${isConnected ? 'neo-status-online' : 'neo-status-offline'}`}></div>
           <span style={{ fontSize: '12px', fontWeight: 'bold' }}>{isConnected ? '🟢 Connected' : '🔴 Disconnected'}</span>
         </div>
       </div>
@@ -180,7 +180,7 @@ const StudentClassroom: React.FC<StudentClassroomProps> = ({
 
   const renderWaitingState = () => (
     <div className="neo-container">
-      <div className="neo-card neo-p-8 neo-max-w-md neo-w-full bg-neo-white" style={{ maxWidth: '600px' }}>
+      <div className="neo-card neo-p-8 neo-max-w-md neo-w-full bg-neo-surface" style={{ maxWidth: '600px' }}>
         {renderHeader()}
         
         <div className="neo-text-center neo-mb-6">
@@ -189,14 +189,13 @@ const StudentClassroom: React.FC<StudentClassroomProps> = ({
           <p className="neo-font-bold">Your teacher will start soon</p>
         </div>
 
-        <div className="neo-text-center neo-mb-6">
+        <div className="neo-text-center neo-mb-6 neo-card-sm neo-p-4 bg-neo-info">
           <p className="neo-font-bold">{connectedStudents} students connected</p>
         </div>
 
         <button
           onClick={onLeave}
-          className="neo-btn neo-w-full"
-          style={{ backgroundColor: '#FF0000', color: 'white' }}
+          className="neo-btn neo-btn-error neo-w-full"
         >
           Leave Class
         </button>
@@ -209,13 +208,13 @@ const StudentClassroom: React.FC<StudentClassroomProps> = ({
 
     return (
       <div className="neo-container">
-        <div className="neo-card neo-p-8 neo-max-w-md neo-w-full bg-neo-white" style={{ maxWidth: '600px' }}>
+        <div className="neo-card neo-p-8 neo-max-w-md neo-w-full bg-neo-surface" style={{ maxWidth: '600px' }}>
           {renderHeader()}
           
-          <div className="neo-card neo-p-6 bg-neo-white neo-mb-6">
+          <div className="neo-card neo-p-6 bg-neo-accent2 neo-mb-6">
             <div className="neo-flex-between neo-mb-4">
               <h2 className="neo-text-2xl neo-font-black">Question {currentQuestion.questionNumber}</h2>
-              <span className="neo-card-sm neo-p-2 bg-neo-yellow neo-font-black" style={{ padding: '4px 8px' }}>
+              <span className="neo-card-sm neo-p-2 bg-neo-accent1 neo-font-black" style={{ padding: '4px 8px' }}>
                 {currentQuestion.type === 'mc' ? 'Multiple Choice' : 'Text Answer'}
               </span>
             </div>
@@ -228,10 +227,6 @@ const StudentClassroom: React.FC<StudentClassroomProps> = ({
                   <label
                     key={index}
                     className={`neo-radio-option ${selectedAnswer === option ? 'selected' : ''}`}
-                    style={{ 
-                      backgroundColor: selectedAnswer === option ? '#0066FF' : '#E5E7EB',
-                      color: selectedAnswer === option ? 'white' : 'black'
-                    }}
                   >
                     <input
                       type="radio"
@@ -252,7 +247,7 @@ const StudentClassroom: React.FC<StudentClassroomProps> = ({
                   value={textAnswer}
                   onChange={(e) => setTextAnswer(e.target.value)}
                   placeholder="Type your answer..."
-                  className="neo-input neo-textarea"
+                  className="neo-input neo-textarea bg-neo-light-mint"
                   disabled={hasSubmitted}
                   maxLength={200}
                   style={{ textTransform: 'none' }}
@@ -267,8 +262,7 @@ const StudentClassroom: React.FC<StudentClassroomProps> = ({
               {!hasSubmitted ? (
                 <button
                   onClick={submitAnswer}
-                  className="neo-btn neo-w-full"
-                  style={{ backgroundColor: '#0066FF', color: 'black' }}
+                  className="neo-btn neo-btn-primary neo-w-full"
                 >
                   Submit Answer
                 </button>
@@ -276,12 +270,11 @@ const StudentClassroom: React.FC<StudentClassroomProps> = ({
                 <>
                   <button
                     onClick={updateAnswer}
-                    className="neo-btn neo-w-full"
-                    style={{ backgroundColor: '#666666', color: 'white' }}
+                    className="neo-btn neo-btn-warning neo-w-full"
                   >
                     Update Answer
                   </button>
-                  <div className="neo-card-sm neo-p-2 bg-neo-green neo-font-black" style={{ padding: '8px 16px', display: 'flex', alignItems: 'center' }}>
+                  <div className="neo-card-sm neo-p-2 bg-neo-success neo-font-black" style={{ padding: '8px 16px', display: 'flex', alignItems: 'center', color: 'white' }}>
                     ✓ Answer Submitted
                   </div>
                 </>
@@ -298,10 +291,10 @@ const StudentClassroom: React.FC<StudentClassroomProps> = ({
 
     return (
       <div className="neo-container">
-        <div className="neo-card neo-p-8 neo-max-w-md neo-w-full bg-neo-white" style={{ maxWidth: '600px' }}>
+        <div className="neo-card neo-p-8 neo-max-w-md neo-w-full bg-neo-surface" style={{ maxWidth: '600px' }}>
           {renderHeader()}
           
-          <div className="neo-card neo-p-6 bg-neo-white neo-mb-6">
+          <div className="neo-card neo-p-6 bg-neo-light-blue neo-mb-6">
             <h2 className="neo-text-2xl neo-font-black neo-mb-4">Results</h2>
 
             {currentQuestion.type === 'mc' && currentQuestion.options ? (
@@ -323,7 +316,7 @@ const StudentClassroom: React.FC<StudentClassroomProps> = ({
                           className="neo-progress-fill" 
                           style={{ 
                             width: `${result.percentage}%`,
-                            backgroundColor: isUserAnswer ? '#0066FF' : '#666666'
+                            backgroundColor: isUserAnswer ? '#9723C9' : '#B5D2AD'
                           }}
                         ></div>
                       </div>
@@ -336,7 +329,7 @@ const StudentClassroom: React.FC<StudentClassroomProps> = ({
                 <h3 className="neo-font-bold neo-mb-4">Anonymous Answers:</h3>
                 <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
                   {Object.entries(results).map(([answer, data], index) => (
-                    <div key={index} className="neo-card-sm neo-p-4 neo-mb-2 bg-neo-gray" style={{ backgroundColor: answer === userAnswer ? '#0066FF' : '#E5E7EB' }}>
+                    <div key={index} className={`neo-card-sm neo-p-4 neo-mb-2 ${answer === userAnswer ? 'bg-neo-primary' : 'bg-neo-muted'}`}>
                       <span className="neo-font-bold" style={{ color: answer === userAnswer ? 'white' : 'black' }}>
                         "{answer}" {answer === userAnswer ? '(Your answer)' : ''} - {data.count} students
                       </span>
@@ -346,7 +339,7 @@ const StudentClassroom: React.FC<StudentClassroomProps> = ({
               </div>
             )}
 
-            <div className="neo-text-center neo-mb-4">
+            <div className="neo-text-center neo-mb-4 neo-card-sm neo-p-4 bg-neo-accent1">
               <p className="neo-text-xl neo-font-black">{Object.values(results).reduce((sum, r) => sum + r.count, 0)} students responded</p>
               <p className="neo-font-bold">Waiting for next question...</p>
             </div>
@@ -358,7 +351,7 @@ const StudentClassroom: React.FC<StudentClassroomProps> = ({
 
   const renderErrorState = () => (
     <div className="neo-container">
-      <div className="neo-card neo-p-8 neo-max-w-md neo-w-full bg-neo-white" style={{ maxWidth: '600px' }}>
+      <div className="neo-card neo-p-8 neo-max-w-md neo-w-full bg-neo-surface" style={{ maxWidth: '600px' }}>
         {renderHeader()}
         
         <div className="neo-text-center neo-mb-6">
@@ -369,8 +362,7 @@ const StudentClassroom: React.FC<StudentClassroomProps> = ({
 
         <button
           onClick={() => setIsConnected(true)}
-          className="neo-btn neo-w-full"
-          style={{ backgroundColor: '#0066FF', color: 'black' }}
+          className="neo-btn neo-btn-info neo-w-full"
         >
           Reconnect
         </button>

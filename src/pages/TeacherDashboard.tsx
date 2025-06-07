@@ -92,7 +92,7 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
       lastActive: 'Just created',
       questions: 0,
       status: 'preparing',
-      createdAt: new Date().toISOString().split('T')[0],
+      createdAt: new Date().toISOString().split('T')[0] || '',
     };
 
     setClasses([newClass, ...classes]);
@@ -113,7 +113,7 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
     const url = URL.createObjectURL(dataBlob);
     const link = document.createElement('a');
     link.href = url;
-    (link as any).download = `${classItem.name}_${classItem.code}_export.json`;
+    link.download = `${classItem.name}_${classItem.code}_export.json`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -134,16 +134,16 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
 
   const getStatusBadge = (status: Class['status']) => {
     const statusConfig = {
-      preparing: { text: '⚫ Preparing', color: '#666666' },
-      active: { text: '🟢 Active', color: '#00FF66' },
-      ended: { text: '🔴 Ended', color: '#FF0000' },
+      preparing: { text: 'Preparing', bgClass: 'bg-neo-inactive-class', textColor: 'white' },
+      active: { text: 'Active', bgClass: 'bg-neo-active-class', textColor: 'black' },
+      ended: { text: 'Ended', bgClass: 'bg-neo-inactive-class', textColor: 'white' },
     };
     
     const config = statusConfig[status];
     return (
       <span 
-        className="neo-card-sm neo-p-2 neo-font-black" 
-        style={{ backgroundColor: config.color, color: 'black', padding: '4px 8px' }}
+        className={`neo-card-sm neo-p-2 neo-font-black ${config.bgClass}`}
+        style={{ color: config.textColor, padding: '4px 8px' }}
       >
         {config.text}
       </span>
@@ -155,7 +155,7 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
       {/* Header */}
       <header className="neo-header">
         <h1 className="neo-text-2xl neo-font-black">Welcome, {teacherId}</h1>
-        <button onClick={onLogout} className="neo-btn" style={{ backgroundColor: '#FF0000', color: 'white' }}>
+        <button onClick={onLogout} className="neo-btn bg-neo-logout" style={{ color: 'white' }}>
           Logout
         </button>
       </header>
@@ -165,8 +165,8 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
         <div className="neo-mb-6">
           <button
             onClick={showCreateClassModal}
-            className="neo-btn-lg"
-            style={{ backgroundColor: '#FF0066', color: 'white', maxWidth: '400px' }}
+            className="neo-btn-lg bg-neo-create-manage"
+            style={{ maxWidth: '400px', color: 'black' }}
           >
             + Create New Class
           </button>
@@ -177,22 +177,18 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
           <div className="neo-flex neo-gap-4">
             <button
               onClick={() => filterClasses('active')}
-              className={`neo-btn ${activeTab === 'active' ? 'bg-neo-blue' : 'bg-neo-gray'}`}
+              className={`neo-btn ${activeTab === 'active' ? 'neo-btn-primary' : 'neo-btn-muted'}`}
               style={{ 
-                backgroundColor: activeTab === 'active' ? '#0066FF' : '#666666',
-                color: activeTab === 'active' ? 'black' : 'white',
-                borderBottom: activeTab === 'active' ? '4px solid #0066FF' : 'none'
+                borderBottom: activeTab === 'active' ? '4px solid #9723C9' : 'none'
               }}
             >
               Active Classes
             </button>
             <button
               onClick={() => filterClasses('past')}
-              className={`neo-btn ${activeTab === 'past' ? 'bg-neo-blue' : 'bg-neo-gray'}`}
+              className={`neo-btn ${activeTab === 'past' ? 'neo-btn-primary' : 'neo-btn-muted'}`}
               style={{ 
-                backgroundColor: activeTab === 'past' ? '#0066FF' : '#666666',
-                color: activeTab === 'past' ? 'black' : 'white',
-                borderBottom: activeTab === 'past' ? '4px solid #0066FF' : 'none'
+                borderBottom: activeTab === 'past' ? '4px solid #9723C9' : 'none'
               }}
             >
               Past Classes
@@ -202,7 +198,7 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
 
         {/* Classes Grid */}
         {getFilteredClasses().length === 0 ? (
-          <div className="neo-card neo-p-8 neo-text-center bg-neo-white">
+          <div className="neo-card neo-p-8 neo-text-center bg-neo-surface">
             <p className="neo-text-xl neo-font-bold neo-mb-4">
               {activeTab === 'active' ? 'No active classes. Create your first class to get started!' : 'No past classes yet.'}
             </p>
@@ -211,7 +207,7 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
         ) : (
           <div className="neo-grid neo-grid-3">
             {getFilteredClasses().map((classItem) => (
-              <div key={classItem.id} className="neo-card neo-p-6 bg-neo-white">
+              <div key={classItem.id} className="neo-card neo-p-6 bg-neo-surface">
                 <div className="neo-flex-between neo-mb-4">
                   <h4 className="neo-text-2xl neo-font-black">{classItem.name}</h4>
                   {getStatusBadge(classItem.status)}
@@ -220,7 +216,7 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
                 <div className="neo-mb-4" style={{ lineHeight: '1.6' }}>
                   <p style={{ margin: '4px 0' }}>
                     <span className="neo-font-bold">Code:</span>{' '}
-                    <span className="neo-card-sm neo-p-2 bg-neo-yellow neo-font-black" style={{ padding: '4px 8px' }}>
+                    <span className="neo-card-sm neo-p-2 bg-neo-classroom-code neo-font-black" style={{ padding: '4px 8px', color: 'black' }}>
                       {classItem.code}
                     </span>
                   </p>
@@ -237,15 +233,14 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
                 <div className="neo-flex neo-gap-2">
                   <button
                     onClick={() => onEnterClass(classItem.code)}
-                    className="neo-btn neo-w-full"
-                    style={{ backgroundColor: '#666666', color: 'white' }}
+                    className="neo-btn bg-neo-create-manage neo-w-full"
+                    style={{ color: 'black' }}
                   >
                     Manage
                   </button>
                   <button
                     onClick={() => exportClassData(classItem)}
-                    className="neo-btn"
-                    style={{ backgroundColor: 'transparent', border: '2px solid #666666', color: '#666666' }}
+                    className="neo-btn neo-btn-muted"
                   >
                     Export Data
                   </button>
@@ -275,7 +270,7 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
           onClick={closeModal}
         >
           <div 
-            className="neo-card neo-p-6 bg-neo-white"
+            className="neo-card neo-p-6 bg-neo-surface"
             style={{ maxWidth: '500px', width: '90%' }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -286,7 +281,7 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
               value={className}
               onChange={(e) => setClassName(e.target.value)}
               placeholder="Class Name"
-              className="neo-input neo-mb-4"
+              className="neo-input neo-mb-4 bg-neo-accent1"
               style={{ textTransform: 'none' }}
               autoFocus
             />
@@ -294,15 +289,13 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
             <div className="neo-flex neo-gap-4">
               <button
                 onClick={createNewClass}
-                className="neo-btn neo-w-full"
-                style={{ backgroundColor: '#0066FF', color: 'black' }}
+                className="neo-btn neo-btn-primary neo-w-full"
               >
                 Create Class
               </button>
               <button
                 onClick={closeModal}
-                className="neo-btn neo-w-full"
-                style={{ backgroundColor: '#666666', color: 'white' }}
+                className="neo-btn neo-btn-muted neo-w-full"
               >
                 Cancel
               </button>
