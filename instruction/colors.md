@@ -9,6 +9,7 @@
 7. Use #000000 for Preparing and Ended Class, use #FFFFFF color text
 8. Use #FFDB58 for Classroom Code
 9. Use #69D2E7 for create new class and manage button
+10. 
 
 # Color Codes from Palette
 
