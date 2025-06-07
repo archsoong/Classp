@@ -23,6 +23,37 @@ function App() {
   const [currentState, setCurrentState] = useState<AppState>('login');
   const [user, setUser] = useState<User | null>(null);
   const [currentClass, setCurrentClass] = useState<ClassInfo | null>(null);
+  const [devMode, setDevMode] = useState(true); // Enable dev navigation
+
+  // Development navigation - for UI review
+  const handleDevNavigation = (page: AppState) => {
+    setCurrentState(page);
+    
+    // Set up mock data for each page
+    switch (page) {
+      case 'teacherDashboard':
+        setUser({ id: 'TEACHER123', type: 'teacher' });
+        setCurrentClass(null);
+        break;
+      case 'teacherClassroom':
+        setUser({ id: 'TEACHER123', type: 'teacher' });
+        setCurrentClass({ code: 'ABC123', name: 'MATH 101' });
+        break;
+      case 'studentJoin':
+        setUser(null);
+        setCurrentClass({ code: 'ABC123', name: 'MATH 101' });
+        break;
+      case 'studentClassroom':
+        setUser({ id: 'STUDENT456', type: 'student', name: 'John Doe' });
+        setCurrentClass({ code: 'ABC123', name: 'MATH 101', teacherName: 'MR. SMITH' });
+        break;
+      case 'login':
+      default:
+        setUser(null);
+        setCurrentClass(null);
+        break;
+    }
+  };
 
   // Handle teacher login from LoginPage
   const handleLogin = (userType: 'teacher' | 'student', userId: string, classCode?: string) => {
@@ -108,48 +139,173 @@ function App() {
 
   return (
     <div className="App">
-      {/* Login Page - Teacher only entry point */}
-      {currentState === 'login' && (
-        <LoginPage onLogin={handleLogin} />
+      {/* Development Navigation Bar - for UI review */}
+      {devMode && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 9999,
+          backgroundColor: '#000',
+          color: 'white',
+          padding: '8px 16px',
+          display: 'flex',
+          gap: '8px',
+          flexWrap: 'wrap',
+          fontSize: '12px',
+          fontFamily: 'monospace'
+        }}>
+          <span style={{ fontWeight: 'bold', marginRight: '16px' }}>DEV NAV:</span>
+          <button 
+            onClick={() => handleDevNavigation('login')}
+            style={{ 
+              background: currentState === 'login' ? '#FF7A5C' : '#333', 
+              color: 'white', 
+              border: 'none', 
+              padding: '4px 8px', 
+              cursor: 'pointer',
+              fontSize: '12px'
+            }}
+          >
+            Login
+          </button>
+          <button 
+            onClick={() => handleDevNavigation('teacherDashboard')}
+            style={{ 
+              background: currentState === 'teacherDashboard' ? '#FF7A5C' : '#333', 
+              color: 'white', 
+              border: 'none', 
+              padding: '4px 8px', 
+              cursor: 'pointer',
+              fontSize: '12px'
+            }}
+          >
+            Teacher Dashboard
+          </button>
+          <button 
+            onClick={() => handleDevNavigation('teacherClassroom')}
+            style={{ 
+              background: currentState === 'teacherClassroom' ? '#FF7A5C' : '#333', 
+              color: 'white', 
+              border: 'none', 
+              padding: '4px 8px', 
+              cursor: 'pointer',
+              fontSize: '12px'
+            }}
+          >
+            Teacher Classroom
+          </button>
+          <button 
+            onClick={() => handleDevNavigation('studentJoin')}
+            style={{ 
+              background: currentState === 'studentJoin' ? '#FF7A5C' : '#333', 
+              color: 'white', 
+              border: 'none', 
+              padding: '4px 8px', 
+              cursor: 'pointer',
+              fontSize: '12px'
+            }}
+          >
+            Student Join
+          </button>
+          <button 
+            onClick={() => handleDevNavigation('studentClassroom')}
+            style={{ 
+              background: currentState === 'studentClassroom' ? '#FF7A5C' : '#333', 
+              color: 'white', 
+              border: 'none', 
+              padding: '4px 8px', 
+              cursor: 'pointer',
+              fontSize: '12px'
+            }}
+          >
+            Student Classroom
+          </button>
+          <button 
+            onClick={() => setDevMode(false)}
+            style={{ 
+              background: '#666', 
+              color: 'white', 
+              border: 'none', 
+              padding: '4px 8px', 
+              cursor: 'pointer',
+              fontSize: '12px',
+              marginLeft: 'auto'
+            }}
+          >
+            Hide Nav
+          </button>
+        </div>
       )}
 
-      {/* Teacher Dashboard - Class management hub */}
-      {currentState === 'teacherDashboard' && user && user.type === 'teacher' && (
-        <TeacherDashboard
-          teacherId={user.id}
-          onLogout={handleLogout}
-          onEnterClass={handleEnterClass}
-        />
-      )}
+      {/* Add top padding when dev nav is visible */}
+      <div style={{ paddingTop: devMode ? '40px' : '0' }}>
+        {/* Login Page - Teacher only entry point */}
+        {currentState === 'login' && (
+          <LoginPage onLogin={handleLogin} />
+        )}
 
-      {/* Teacher Classroom - Live class control center */}
-      {currentState === 'teacherClassroom' && user && user.type === 'teacher' && currentClass && (
-        <TeacherClassroom
-          classCode={currentClass.code}
-          className={currentClass.name}
-          onBack={handleBackToDashboard}
-        />
-      )}
+        {/* Teacher Dashboard - Class management hub */}
+        {currentState === 'teacherDashboard' && user && user.type === 'teacher' && (
+          <TeacherDashboard
+            teacherId={user.id}
+            onLogout={handleLogout}
+            onEnterClass={handleEnterClass}
+          />
+        )}
 
-      {/* Student Join Page - Class entry point via link */}
-      {currentState === 'studentJoin' && (
-        <StudentJoinPage
-          classCode={currentClass?.code}
-          onJoinClass={handleStudentJoinClass}
-          onBackToHome={handleBackToHome}
-        />
-      )}
+        {/* Teacher Classroom - Live class control center */}
+        {currentState === 'teacherClassroom' && user && user.type === 'teacher' && currentClass && (
+          <TeacherClassroom
+            classCode={currentClass.code}
+            className={currentClass.name}
+            onBack={handleBackToDashboard}
+          />
+        )}
 
-      {/* Student Classroom - Question answering interface */}
-      {currentState === 'studentClassroom' && user && user.type === 'student' && currentClass && (
-        <StudentClassroom
-          classCode={currentClass.code}
-          className={currentClass.name}
-          teacherName={currentClass.teacherName || 'TEACHER'}
-          studentId={user.id}
-          studentName={user.name || user.id}
-          onLeave={handleLeaveClass}
-        />
+        {/* Student Join Page - Class entry point via link */}
+        {currentState === 'studentJoin' && (
+          <StudentJoinPage
+            classCode={currentClass?.code}
+            onJoinClass={handleStudentJoinClass}
+            onBackToHome={handleBackToHome}
+          />
+        )}
+
+        {/* Student Classroom - Question answering interface */}
+        {currentState === 'studentClassroom' && user && user.type === 'student' && currentClass && (
+          <StudentClassroom
+            classCode={currentClass.code}
+            className={currentClass.name}
+            teacherName={currentClass.teacherName || 'TEACHER'}
+            studentId={user.id}
+            studentName={user.name || user.id}
+            onLeave={handleLeaveClass}
+          />
+        )}
+      </div>
+
+      {/* Show dev nav toggle if hidden */}
+      {!devMode && (
+        <button
+          onClick={() => setDevMode(true)}
+          style={{
+            position: 'fixed',
+            top: '10px',
+            right: '10px',
+            zIndex: 9999,
+            background: '#000',
+            color: 'white',
+            border: 'none',
+            padding: '8px 12px',
+            cursor: 'pointer',
+            fontSize: '12px',
+            fontFamily: 'monospace'
+          }}
+        >
+          Show Dev Nav
+        </button>
       )}
     </div>
   );
