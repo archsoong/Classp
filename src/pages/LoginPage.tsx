@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface LoginPageProps {
   onLogin: (userType: 'teacher' | 'student', userId: string, classCode?: string) => void;
 }
 
 const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
+  const { t } = useTranslation(); // Add i18n translation hook
   const [teacherId, setTeacherId] = useState('');
   const [error, setError] = useState('');
 
@@ -17,12 +19,12 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
     setError('');
     
     if (!teacherId.trim()) {
-      setError('Please enter your Teacher ID');
+      setError(t('validation.required'));
       return;
     }
     
     if (!validateTeacherId(teacherId)) {
-      setError('Teacher ID must be 3-20 alphanumeric characters');
+      setError('Teacher ID must be 3-20 alphanumeric characters'); // Keep technical validation in English
       return;
     }
     
@@ -45,6 +47,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
           <h1 className="neo-text-4xl neo-font-black">
             Classp
           </h1>
+          <p className="neo-text-lg neo-font-bold neo-mt-2">{t('login.subtitle')}</p>
         </div>
 
         {/* Teacher Login Form */}
@@ -54,7 +57,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
             value={teacherId}
             onChange={(e) => setTeacherId(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Enter Teacher ID"
+            placeholder={t('login.teacherIdPlaceholder')}
             className="neo-input neo-mb-4 bg-neo-accent1"
             maxLength={20}
             style={{ textTransform: 'none' }}
@@ -65,7 +68,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
             className="neo-btn neo-btn-primary neo-w-full"
             style={{ backgroundColor: '#FF1493', color: 'white' }}
           >
-            Login
+            {t('login.enterAsTeacher')}
           </button>
         </div>
 

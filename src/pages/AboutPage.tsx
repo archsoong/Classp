@@ -1,11 +1,15 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const AboutPage: React.FC = () => {
+  const { t } = useTranslation(); // Add i18n translation hook
+
   return (
     <div className="neo-page">
       {/* Header */}
       <div className="neo-text-center neo-mb-8">
-        <h1 className="neo-text-4xl neo-font-black neo-mb-4">About Classp</h1>
+        <h1 className="neo-text-4xl neo-font-black neo-mb-4">{t('about.title')}</h1>
+        <p className="neo-text-lg neo-font-bold">{t('about.subtitle')}</p>
       </div>
       
       <div className="neo-container-centered neo-max-w-4xl">
@@ -14,7 +18,7 @@ const AboutPage: React.FC = () => {
           <div className="neo-mb-8">
             <h2 className="neo-text-2xl neo-font-black neo-mb-4">Our Mission</h2>
             <p className="neo-font-bold neo-mb-4">
-              Classp bridges the gap between traditional teaching and modern digital engagement. We believe that every student's voice matters, and every teacher deserves tools that make learning more dynamic and inclusive.
+              {t('about.description')}
             </p>
           </div>
 
@@ -28,14 +32,14 @@ const AboutPage: React.FC = () => {
 
           {/* Key Features */}
           <div className="neo-mb-8">
-            <h2 className="neo-text-2xl neo-font-black neo-mb-4">Key Features</h2>
+            <h2 className="neo-text-2xl neo-font-black neo-mb-4">{t('about.features')}</h2>
             <div className="neo-mb-4">
               <ul style={{ listStyle: 'none', padding: 0 }}>
-                <li className="neo-font-bold neo-mb-2">• <strong>Instant Engagement:</strong> Real-time polling and Q&A sessions that keep students actively involved</li>
+                <li className="neo-font-bold neo-mb-2">• <strong>Instant Engagement:</strong> {t('about.realTimePolling')}</li>
                 <li className="neo-font-bold neo-mb-2">• <strong>Anonymous Participation:</strong> Students can share thoughts and answers without fear of judgment</li>
                 <li className="neo-font-bold neo-mb-2">• <strong>Simple Access:</strong> No accounts needed for students—just click a link and join</li>
                 <li className="neo-font-bold neo-mb-2">• <strong>Live Results:</strong> Teachers see responses as they happen, adapting lessons in real-time</li>
-                <li className="neo-font-bold neo-mb-2">• <strong>Universal Design:</strong> Works seamlessly across all devices with our unified responsive interface</li>
+                <li className="neo-font-bold neo-mb-2">• <strong>Universal Design:</strong> {t('about.easyToUse')}</li>
               </ul>
             </div>
           </div>

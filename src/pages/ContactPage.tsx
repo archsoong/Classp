@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const ContactPage: React.FC = () => {
+  const { t } = useTranslation(); // Add i18n translation hook
+  const [imageError, setImageError] = useState(false);
+
   return (
     <div className="neo-page">
       {/* Header */}
       <div className="neo-text-center neo-mb-8">
-        <h1 className="neo-text-4xl neo-font-black neo-mb-4">Contact</h1>
-        <p className="neo-text-xl neo-font-bold">Get in touch with the Classp team</p>
+        <h1 className="neo-text-4xl neo-font-black neo-mb-4">{t('contact.title')}</h1>
+        <p className="neo-text-xl neo-font-bold">{t('contact.subtitle')}</p>
       </div>
       
       <div className="neo-container-centered neo-max-w-4xl">
@@ -14,18 +18,41 @@ const ContactPage: React.FC = () => {
         <div className="neo-card neo-p-6 bg-neo-surface neo-text-center">
           {/* Profile Image */}
           <div className="neo-mb-8" style={{ marginTop: '2rem' }}>
-            <img 
-              src="/profile.webp" 
-              alt="Assign Arch Profile" 
-              style={{
-                width: '120px',
-                height: '120px',
-                borderRadius: '50%',
-                objectFit: 'cover',
-                margin: '0 auto',
-                display: 'block'
-              }}
-            />
+            {!imageError ? (
+              <img 
+                src="/profile.webp" 
+                alt="Assign Arch Profile" 
+                style={{
+                  width: '120px',
+                  height: '120px',
+                  borderRadius: '50%',
+                  objectFit: 'cover',
+                  margin: '0 auto',
+                  display: 'block'
+                }}
+                onError={() => setImageError(true)}
+              />
+            ) : (
+              // Fallback avatar with initials
+              <div 
+                style={{
+                  width: '120px',
+                  height: '120px',
+                  borderRadius: '50%',
+                  backgroundColor: '#FF1493',
+                  color: 'white',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '48px',
+                  fontWeight: 'bold',
+                  margin: '0 auto',
+                  border: '3px solid #000000'
+                }}
+              >
+                AA
+              </div>
+            )}
           </div>
 
           <h3 className="neo-text-xl neo-font-black neo-mb-2">Assign Arch</h3>

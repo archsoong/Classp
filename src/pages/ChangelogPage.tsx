@@ -1,12 +1,15 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const ChangelogPage: React.FC = () => {
+  const { t } = useTranslation(); // Add i18n translation hook
+
   return (
     <div className="neo-page">
       {/* Header */}
       <div className="neo-text-center neo-mb-8">
-        <h1 className="neo-text-4xl neo-font-black neo-mb-4">Changelog</h1>
-        <p className="neo-text-xl neo-font-bold">Updates and improvements to Classp</p>
+        <h1 className="neo-text-4xl neo-font-black neo-mb-4">{t('changelog.title')}</h1>
+        <p className="neo-text-xl neo-font-bold">{t('changelog.subtitle')}</p>
       </div>
       
       <div className="neo-container-centered neo-max-w-4xl">

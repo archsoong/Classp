@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface Class {
   id: string;
@@ -22,6 +23,7 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
   onLogout,
   onEnterClass,
 }) => {
+  const { t } = useTranslation(); // Add i18n translation hook
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [className, setClassName] = useState('');
   const [activeTab, setActiveTab] = useState<'active' | 'past'>('active');

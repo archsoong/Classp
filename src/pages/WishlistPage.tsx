@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface Wish {
   id: string;
@@ -21,6 +22,7 @@ interface Vote {
 }
 
 const WishlistPage: React.FC = () => {
+  const { t } = useTranslation(); // Add i18n translation hook
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showVoteModal, setShowVoteModal] = useState(false);
   const [selectedWish, setSelectedWish] = useState<Wish | null>(null);
@@ -100,11 +102,11 @@ const WishlistPage: React.FC = () => {
 
   const getCategoryLabel = (category: string) => {
     const labels = {
-      questions: 'Questions',
-      ui_ux: 'UI/UX',
-      analytics: 'Analytics',
-      integration: 'Integration',
-      other: 'Other'
+      questions: t('wishlist.categories.questions'),
+      ui_ux: t('wishlist.categories.ui_ux'),
+      analytics: t('wishlist.categories.analytics'),
+      integration: t('wishlist.categories.integration'),
+      other: t('wishlist.categories.other')
     };
     return labels[category as keyof typeof labels] || category;
   };
@@ -127,7 +129,7 @@ const WishlistPage: React.FC = () => {
 
   const handleCreateWish = () => {
     if (!newWish.title.trim() || !newWish.description.trim()) {
-      alert('Please fill in all required fields');
+      alert(t('validation.fillAllFields'));
       return;
     }
 
@@ -177,8 +179,8 @@ const WishlistPage: React.FC = () => {
       <div className="neo-container-centered neo-max-w-6xl">
         <div className="neo-flex neo-justify-between neo-items-start neo-mb-8">
           <div>
-            <h1 className="neo-text-4xl neo-font-black neo-mb-2">Wishlist</h1>
-            <p className="neo-text-l neo-font-bold">Classp Team listens to your feedback and build features that matter to you.</p>
+            <h1 className="neo-text-4xl neo-font-black neo-mb-2">{t('wishlist.title')}</h1>
+            <p className="neo-text-l neo-font-bold">{t('wishlist.subtitle')}</p>
           </div>
           <div style={{ marginLeft: 'auto' }}>
             <button
@@ -187,7 +189,7 @@ const WishlistPage: React.FC = () => {
               disabled={!canWishThisMonth}
               style={!canWishThisMonth ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
             >
-              Submit New Wish
+              {t('wishlist.submitNewWish')}
             </button>
           </div>
         </div>
@@ -238,11 +240,11 @@ const WishlistPage: React.FC = () => {
                 <div style={{ marginTop: 'auto', width: '100%' }}>
                   {wish.isOwnWish ? (
                     <div className="neo-font-bold neo-text-center" style={{ fontSize: '12px', color: '#666' }}>
-                      Your wish
+                      {t('wishlist.yourWish')}
                     </div>
                   ) : wish.hasVoted ? (
                     <div className="neo-font-bold neo-text-center" style={{ fontSize: '12px', color: '#00FF00' }}>
-                      ✓ Voted
+                      {t('wishlist.voted')}
                     </div>
                   ) : (
                     <button
@@ -250,7 +252,7 @@ const WishlistPage: React.FC = () => {
                       className="neo-btn neo-btn-export"
                       style={{ fontSize: '12px', padding: '8px 12px', width: '100%' }}
                     >
-                      Vote
+                      {t('wishlist.vote')}
                     </button>
                   )}
                 </div>
@@ -259,7 +261,7 @@ const WishlistPage: React.FC = () => {
               {/* Footer */}
               <div className="neo-text-center" style={{ fontSize: '12px', color: '#666' }}>
                 <span className="neo-font-bold">
-                  👤 Teacher #{wish.teacherId.slice(-3)} • {wish.createdAt} • 💬 {wish.commentCount} comments
+                  👤 {t('wishlist.teacher')} #{wish.teacherId.slice(-3)} • {wish.createdAt} • 💬 {wish.commentCount} {t('wishlist.comments')}
                 </span>
               </div>
             </div>
@@ -268,7 +270,7 @@ const WishlistPage: React.FC = () => {
 
         {getSortedWishes().length === 0 && (
           <div className="neo-card neo-p-8 neo-text-center bg-neo-surface">
-            <p className="neo-text-xl neo-font-bold">No wishes found.</p>
+            <p className="neo-text-xl neo-font-bold">{t('wishlist.noWishesFound')}</p>
           </div>
         )}
       </div>
@@ -277,16 +279,16 @@ const WishlistPage: React.FC = () => {
       {showCreateModal && (
         <div className="neo-modal-overlay" onClick={() => setShowCreateModal(false)}>
           <div className="neo-card neo-p-6 bg-neo-surface neo-modal-content" onClick={(e) => e.stopPropagation()}>
-            <h3 className="neo-text-2xl neo-font-black neo-mb-4">Submit New Wish</h3>
+            <h3 className="neo-text-2xl neo-font-black neo-mb-4">{t('wishlist.createWishTitle')}</h3>
             
             <div className="neo-mb-4">
-              <label className="neo-font-bold neo-mb-2 neo-block">Title (3-100 characters)</label>
+              <label className="neo-font-bold neo-mb-2 neo-block">{t('wishlist.wishTitle')}</label>
               <input
                 type="text"
                 value={newWish.title}
                 onChange={(e) => setNewWish({...newWish, title: e.target.value})}
                 className="neo-input neo-w-full bg-neo-accent1"
-                placeholder="Brief description of your wish..."
+                placeholder={t('wishlist.wishTitlePlaceholder')}
                 maxLength={100}
               />
               <div style={{ fontSize: '12px', color: '#666', textAlign: 'right' }}>
@@ -295,12 +297,12 @@ const WishlistPage: React.FC = () => {
             </div>
 
             <div className="neo-mb-4">
-              <label className="neo-font-bold neo-mb-2 neo-block">Description (10-500 characters)</label>
+              <label className="neo-font-bold neo-mb-2 neo-block">{t('wishlist.wishDescription')}</label>
               <textarea
                 value={newWish.description}
                 onChange={(e) => setNewWish({...newWish, description: e.target.value})}
                 className="neo-input neo-w-full bg-neo-accent1"
-                placeholder="Detailed explanation of your feature request..."
+                placeholder={t('wishlist.wishDescriptionPlaceholder')}
                 rows={4}
                 maxLength={500}
               />
@@ -310,17 +312,17 @@ const WishlistPage: React.FC = () => {
             </div>
 
             <div className="neo-mb-4">
-              <label className="neo-font-bold neo-mb-2 neo-block">Category</label>
+              <label className="neo-font-bold neo-mb-2 neo-block">{t('wishlist.category')}</label>
               <select
                 value={newWish.category}
                 onChange={(e) => setNewWish({...newWish, category: e.target.value as any})}
                 className="neo-input neo-w-full bg-neo-accent1"
               >
-                <option value="questions">Questions</option>
-                <option value="ui_ux">UI/UX</option>
-                <option value="analytics">Analytics</option>
-                <option value="integration">Integration</option>
-                <option value="other">Other</option>
+                <option value="questions">{t('wishlist.categories.questions')}</option>
+                <option value="ui_ux">{t('wishlist.categories.ui_ux')}</option>
+                <option value="analytics">{t('wishlist.categories.analytics')}</option>
+                <option value="integration">{t('wishlist.categories.integration')}</option>
+                <option value="other">{t('wishlist.categories.other')}</option>
               </select>
             </div>
 
@@ -329,13 +331,13 @@ const WishlistPage: React.FC = () => {
                 onClick={handleCreateWish}
                 className="neo-btn neo-btn-primary neo-w-full"
               >
-                Submit Wish
+                {t('wishlist.submitWish')}
               </button>
               <button
                 onClick={() => setShowCreateModal(false)}
                 className="neo-btn neo-btn-muted neo-w-full"
               >
-                Cancel
+                {t('common.cancel')}
               </button>
             </div>
           </div>
@@ -346,7 +348,7 @@ const WishlistPage: React.FC = () => {
       {showVoteModal && selectedWish && (
         <div className="neo-modal-overlay" onClick={() => setShowVoteModal(false)}>
           <div className="neo-card neo-p-6 bg-neo-surface neo-modal-content" onClick={(e) => e.stopPropagation()}>
-            <h3 className="neo-text-2xl neo-font-black neo-mb-4">Cast Your Vote</h3>
+            <h3 className="neo-text-2xl neo-font-black neo-mb-4">{t('wishlist.castVote')}</h3>
             
             <div className="neo-mb-4">
               <h4 className="neo-text-lg neo-font-black neo-mb-2">{selectedWish.title}</h4>
@@ -356,12 +358,12 @@ const WishlistPage: React.FC = () => {
             </div>
 
             <div className="neo-mb-4">
-              <label className="neo-font-bold neo-mb-2 neo-block">Add comment (optional)</label>
+              <label className="neo-font-bold neo-mb-2 neo-block">{t('wishlist.addComment')}</label>
               <textarea
                 value={voteComment}
                 onChange={(e) => setVoteComment(e.target.value)}
                 className="neo-input neo-w-full bg-neo-accent1"
-                placeholder="Why do you support this wish? Share your use case..."
+                placeholder={t('wishlist.voteCommentPlaceholder')}
                 rows={3}
                 maxLength={200}
               />
@@ -375,13 +377,13 @@ const WishlistPage: React.FC = () => {
                 onClick={handleVote}
                 className="neo-btn neo-btn-primary neo-w-full"
               >
-                ▲ Vote & Comment
+                {t('wishlist.voteAndComment')}
               </button>
               <button
                 onClick={() => setShowVoteModal(false)}
                 className="neo-btn neo-btn-muted neo-w-full"
               >
-                Cancel
+                {t('common.cancel')}
               </button>
             </div>
           </div>

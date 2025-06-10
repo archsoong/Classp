@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import LoginPage from './pages/LoginPage';
 import TeacherDashboard from './pages/TeacherDashboard';
 import TeacherClassroom from './pages/TeacherClassroom';
@@ -8,6 +9,7 @@ import ChangelogPage from './pages/ChangelogPage';
 import AboutPage from './pages/AboutPage';
 import WishlistPage from './pages/WishlistPage';
 import ContactPage from './pages/ContactPage';
+import LanguageSwitcher from './components/LanguageSwitcher';
 
 type AppState = 'login' | 'teacherDashboard' | 'teacherClassroom' | 'studentJoin' | 'studentClassroom' | 'changelog' | 'about' | 'wishlist' | 'contact';
 
@@ -24,6 +26,7 @@ interface ClassInfo {
 }
 
 function App() {
+  const { t } = useTranslation(); // Add i18n translation hook
   const [currentState, setCurrentState] = useState<AppState>('login');
   const [user, setUser] = useState<User | null>(null);
   const [currentClass, setCurrentClass] = useState<ClassInfo | null>(null);
@@ -179,10 +182,13 @@ function App() {
           <span>Classp</span>
         </a>
         <div className="neo-main-nav-links">
-          <a href="#" className="neo-main-nav-link" onClick={(e) => { e.preventDefault(); setCurrentState('changelog'); }}>Changelog</a>
-          <a href="#" className="neo-main-nav-link" onClick={(e) => { e.preventDefault(); setCurrentState('about'); }}>About</a>
-          <a href="#" className="neo-main-nav-link" onClick={(e) => { e.preventDefault(); setCurrentState('wishlist'); }}>Wishlist</a>
-          <a href="#" className="neo-main-nav-link" onClick={(e) => { e.preventDefault(); setCurrentState('contact'); }}>Contact</a>
+          <a href="#" className="neo-main-nav-link" onClick={(e) => { e.preventDefault(); setCurrentState('changelog'); }}>{t('navigation.changelog')}</a>
+          <a href="#" className="neo-main-nav-link" onClick={(e) => { e.preventDefault(); setCurrentState('about'); }}>{t('navigation.about')}</a>
+          <a href="#" className="neo-main-nav-link" onClick={(e) => { e.preventDefault(); setCurrentState('wishlist'); }}>{t('navigation.wishlist')}</a>
+          <a href="#" className="neo-main-nav-link" onClick={(e) => { e.preventDefault(); setCurrentState('contact'); }}>{t('navigation.contact')}</a>
+          
+          {/* Language Switcher */}
+          <LanguageSwitcher />
           
           {/* Teacher Dropdown or Login Button */}
           {user && user.type === 'teacher' ? (
@@ -235,7 +241,7 @@ function App() {
                     onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#F5F5F5'}
                     onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                   >
-                    Dashboard
+                    {t('navigation.dashboard')}
                   </button>
                   <button
                     onClick={(e) => {
@@ -255,13 +261,13 @@ function App() {
                     onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#F5F5F5'}
                     onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                   >
-                    Logout
+                    {t('navigation.logout')}
                   </button>
                 </div>
               )}
             </div>
           ) : (
-            <a href="#" className="neo-main-nav-login-btn" onClick={(e) => { e.preventDefault(); setCurrentState('login'); }}>Login</a>
+            <a href="#" className="neo-main-nav-login-btn" onClick={(e) => { e.preventDefault(); setCurrentState('login'); }}>{t('navigation.login')}</a>
           )}
         </div>
       </nav>
