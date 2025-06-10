@@ -23,7 +23,7 @@ function App() {
   const [currentState, setCurrentState] = useState<AppState>('login');
   const [user, setUser] = useState<User | null>(null);
   const [currentClass, setCurrentClass] = useState<ClassInfo | null>(null);
-  const [devMode, setDevMode] = useState(true); // Enable dev navigation
+  const [devMode, setDevMode] = useState(false); // Dev navigation collapsed by default
 
   // Development navigation - for UI review
   const handleDevNavigation = (page: AppState) => {
@@ -139,6 +139,20 @@ function App() {
 
   return (
     <div className="App">
+      {/* Main Navigation Header */}
+      <nav className="neo-main-nav">
+        <a href="#" className="neo-main-nav-logo" onClick={() => setCurrentState('login')}>
+          <div className="neo-main-nav-logo-icon">C</div>
+          <span>Classp</span>
+        </a>
+        <div className="neo-main-nav-links">
+          <a href="#" className="neo-main-nav-link">Changelog</a>
+          <a href="#" className="neo-main-nav-link">About</a>
+          <a href="#" className="neo-main-nav-link">Wishlist</a>
+          <a href="#" className="neo-main-nav-link">Contact</a>
+        </div>
+      </nav>
+
       {/* Development Navigation Bar - for UI review */}
       {devMode && (
         <div style={{
@@ -239,8 +253,8 @@ function App() {
         </div>
       )}
 
-      {/* Add top padding when dev nav is visible */}
-      <div style={{ paddingTop: devMode ? '40px' : '0' }}>
+      {/* Main Content */}
+      <div className="neo-main-content" style={{ paddingTop: devMode ? '40px' : '0' }}>
         {/* Login Page - Teacher only entry point */}
         {currentState === 'login' && (
           <LoginPage onLogin={handleLogin} />

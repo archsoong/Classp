@@ -1,7 +1,7 @@
 Color hex codes and their respective usage:
 
 1. Use #FFFFFF for text box input
-2. Use #F5E6B3 for background
+2. Use #FFF3C8 for background
 3. Use #FF1493 for Logos and Login Button
 4. Use #FFFFFF for UI Container
 5. Use #000000 for LOGOUT button
