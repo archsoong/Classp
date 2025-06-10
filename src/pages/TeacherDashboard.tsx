@@ -151,14 +151,6 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
 
   return (
     <div className="neo-page">
-      {/* Header */}
-      <header className="neo-header">
-        <h1 className="neo-text-2xl neo-font-black">Welcome, {teacherId}</h1>
-        <button onClick={onLogout} className="neo-btn neo-btn-logout">
-          Logout
-        </button>
-      </header>
-
       <div className="neo-max-w-6xl neo-container-centered">
         {/* Create Class Button */}
         <div className="neo-mb-6">

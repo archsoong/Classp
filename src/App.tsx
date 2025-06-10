@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import LoginPage from './pages/LoginPage';
 import TeacherDashboard from './pages/TeacherDashboard';
 import TeacherClassroom from './pages/TeacherClassroom';
@@ -28,6 +28,25 @@ function App() {
   const [user, setUser] = useState<User | null>(null);
   const [currentClass, setCurrentClass] = useState<ClassInfo | null>(null);
   const [devMode, setDevMode] = useState(false); // Dev navigation collapsed by default
+  const [showTeacherDropdown, setShowTeacherDropdown] = useState(false); // Teacher dropdown state
+  const dropdownRef = useRef<HTMLDivElement>(null); // Ref for dropdown click outside detection
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowTeacherDropdown(false);
+      }
+    };
+
+    if (showTeacherDropdown) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showTeacherDropdown]);
 
   // Development navigation - for UI review
   const handleDevNavigation = (page: AppState) => {
@@ -89,6 +108,7 @@ function App() {
     setUser(null);
     setCurrentClass(null);
     setCurrentState('login');
+    setShowTeacherDropdown(false); // Close dropdown on logout
   };
 
   // Handle teacher entering a class from dashboard
@@ -105,6 +125,7 @@ function App() {
   const handleBackToDashboard = () => {
     setCurrentClass(null);
     setCurrentState('teacherDashboard');
+    setShowTeacherDropdown(false); // Close dropdown when navigating
   };
 
   // Handle student joining class from StudentJoinPage
@@ -162,7 +183,86 @@ function App() {
           <a href="#" className="neo-main-nav-link" onClick={(e) => { e.preventDefault(); setCurrentState('about'); }}>About</a>
           <a href="#" className="neo-main-nav-link" onClick={(e) => { e.preventDefault(); setCurrentState('wishlist'); }}>Wishlist</a>
           <a href="#" className="neo-main-nav-link" onClick={(e) => { e.preventDefault(); setCurrentState('contact'); }}>Contact</a>
-          <a href="#" className="neo-main-nav-login-btn" onClick={(e) => { e.preventDefault(); setCurrentState('login'); }}>Login</a>
+          
+          {/* Teacher Dropdown or Login Button */}
+          {user && user.type === 'teacher' ? (
+            <div className="neo-teacher-dropdown" style={{ position: 'relative' }} ref={dropdownRef}>
+              <button 
+                className="neo-main-nav-login-btn"
+                onClick={(e) => { 
+                  e.preventDefault(); 
+                  setShowTeacherDropdown(!showTeacherDropdown); 
+                }}
+                style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+              >
+                Hi, {user.id}
+                <span style={{ fontSize: '12px' }}>▼</span>
+              </button>
+              
+              {showTeacherDropdown && (
+                <div 
+                  className="neo-dropdown-menu"
+                  style={{
+                    position: 'absolute',
+                    top: '100%',
+                    right: 0,
+                    marginTop: '4px',
+                    backgroundColor: '#FFFFFF',
+                    border: '2px solid #000000',
+                    zIndex: 1000,
+                    minWidth: '160px',
+                    boxShadow: '4px 4px 0px #000000'
+                  }}
+                >
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setCurrentState('teacherDashboard');
+                      setCurrentClass(null);
+                      setShowTeacherDropdown(false);
+                    }}
+                    style={{
+                      display: 'block',
+                      width: '100%',
+                      padding: '12px 16px',
+                      backgroundColor: 'transparent',
+                      border: 'none',
+                      textAlign: 'left',
+                      fontWeight: 'bold',
+                      cursor: 'pointer',
+                      borderBottom: '1px solid #000000'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#F5F5F5'}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                  >
+                    Dashboard
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleLogout();
+                    }}
+                    style={{
+                      display: 'block',
+                      width: '100%',
+                      padding: '12px 16px',
+                      backgroundColor: 'transparent',
+                      border: 'none',
+                      textAlign: 'left',
+                      fontWeight: 'bold',
+                      cursor: 'pointer'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#F5F5F5'}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <a href="#" className="neo-main-nav-login-btn" onClick={(e) => { e.preventDefault(); setCurrentState('login'); }}>Login</a>
+          )}
         </div>
       </nav>
 
