@@ -713,6 +713,25 @@ body {
   border: 2px solid #FF1493;
 }
 
+.neo-main-nav-login-btn {
+  background-color: #FF1493;
+  color: #FFFFFF;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 16px;
+  text-transform: uppercase;
+  transition: color 0.2s ease;
+  padding: 8px 16px;
+  border: 2px solid #000000;
+  margin-left: 24px;
+}
+
+.neo-main-nav-login-btn:hover {
+  color: #FF1493;
+  background-color: transparent;
+  border: 2px solid #000000;
+}
+
 .neo-main-content {
   margin-top: 80px; /* Account for fixed header */
 }

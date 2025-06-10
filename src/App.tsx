@@ -4,8 +4,12 @@ import TeacherDashboard from './pages/TeacherDashboard';
 import TeacherClassroom from './pages/TeacherClassroom';
 import StudentJoinPage from './pages/StudentJoinPage';
 import StudentClassroom from './pages/StudentClassroom';
+import ChangelogPage from './pages/ChangelogPage';
+import AboutPage from './pages/AboutPage';
+import WishlistPage from './pages/WishlistPage';
+import ContactPage from './pages/ContactPage';
 
-type AppState = 'login' | 'teacherDashboard' | 'teacherClassroom' | 'studentJoin' | 'studentClassroom';
+type AppState = 'login' | 'teacherDashboard' | 'teacherClassroom' | 'studentJoin' | 'studentClassroom' | 'changelog' | 'about' | 'wishlist' | 'contact';
 
 interface User {
   id: string;
@@ -46,6 +50,14 @@ function App() {
       case 'studentClassroom':
         setUser({ id: 'STUDENT456', type: 'student', name: 'John Doe' });
         setCurrentClass({ code: 'ABC123', name: 'MATH 101', teacherName: 'MR. SMITH' });
+        break;
+      case 'changelog':
+      case 'about':
+      case 'wishlist':
+      case 'contact':
+        // Navigation pages don't need special state setup
+        setUser(null);
+        setCurrentClass(null);
         break;
       case 'login':
       default:
@@ -146,10 +158,11 @@ function App() {
           <span>Classp</span>
         </a>
         <div className="neo-main-nav-links">
-          <a href="#" className="neo-main-nav-link">Changelog</a>
-          <a href="#" className="neo-main-nav-link">About</a>
-          <a href="#" className="neo-main-nav-link">Wishlist</a>
-          <a href="#" className="neo-main-nav-link">Contact</a>
+          <a href="#" className="neo-main-nav-link" onClick={(e) => { e.preventDefault(); setCurrentState('changelog'); }}>Changelog</a>
+          <a href="#" className="neo-main-nav-link" onClick={(e) => { e.preventDefault(); setCurrentState('about'); }}>About</a>
+          <a href="#" className="neo-main-nav-link" onClick={(e) => { e.preventDefault(); setCurrentState('wishlist'); }}>Wishlist</a>
+          <a href="#" className="neo-main-nav-link" onClick={(e) => { e.preventDefault(); setCurrentState('contact'); }}>Contact</a>
+          <a href="#" className="neo-main-nav-login-btn" onClick={(e) => { e.preventDefault(); setCurrentState('login'); }}>Login</a>
         </div>
       </nav>
 
@@ -237,6 +250,58 @@ function App() {
             Student Classroom
           </button>
           <button 
+            onClick={() => handleDevNavigation('changelog')}
+            style={{ 
+              background: currentState === 'changelog' ? '#FF7A5C' : '#333', 
+              color: 'white', 
+              border: 'none', 
+              padding: '4px 8px', 
+              cursor: 'pointer',
+              fontSize: '12px'
+            }}
+          >
+            Changelog
+          </button>
+          <button 
+            onClick={() => handleDevNavigation('about')}
+            style={{ 
+              background: currentState === 'about' ? '#FF7A5C' : '#333', 
+              color: 'white', 
+              border: 'none', 
+              padding: '4px 8px', 
+              cursor: 'pointer',
+              fontSize: '12px'
+            }}
+          >
+            About
+          </button>
+          <button 
+            onClick={() => handleDevNavigation('wishlist')}
+            style={{ 
+              background: currentState === 'wishlist' ? '#FF7A5C' : '#333', 
+              color: 'white', 
+              border: 'none', 
+              padding: '4px 8px', 
+              cursor: 'pointer',
+              fontSize: '12px'
+            }}
+          >
+            Wishlist
+          </button>
+          <button 
+            onClick={() => handleDevNavigation('contact')}
+            style={{ 
+              background: currentState === 'contact' ? '#FF7A5C' : '#333', 
+              color: 'white', 
+              border: 'none', 
+              padding: '4px 8px', 
+              cursor: 'pointer',
+              fontSize: '12px'
+            }}
+          >
+            Contact
+          </button>
+          <button 
             onClick={() => setDevMode(false)}
             style={{ 
               background: '#666', 
@@ -298,6 +363,12 @@ function App() {
             onLeave={handleLeaveClass}
           />
         )}
+
+        {/* Navigation Pages */}
+        {currentState === 'changelog' && <ChangelogPage />}
+        {currentState === 'about' && <AboutPage />}
+        {currentState === 'wishlist' && <WishlistPage />}
+        {currentState === 'contact' && <ContactPage />}
       </div>
 
       {/* Show dev nav toggle if hidden */}
@@ -306,8 +377,8 @@ function App() {
           onClick={() => setDevMode(true)}
           style={{
             position: 'fixed',
-            top: '10px',
-            right: '10px',
+            bottom: '20px',
+            right: '20px',
             zIndex: 9999,
             background: '#000',
             color: 'white',
@@ -315,7 +386,8 @@ function App() {
             padding: '8px 12px',
             cursor: 'pointer',
             fontSize: '12px',
-            fontFamily: 'monospace'
+            fontFamily: 'monospace',
+            borderRadius: '4px'
           }}
         >
           Show Dev Nav
