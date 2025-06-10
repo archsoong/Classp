@@ -13,7 +13,7 @@
 html,
 body {
   font-family: 'Space Mono', monospace;
-  background-color: #F8D6B3;
+  background-color: #F5E6B3;
   line-height: 1.4;
   height: 100%;
 }
@@ -30,17 +30,17 @@ body {
   align-items: center;
   justify-content: center;
   padding: 16px;
-  background-color: #F8D6B3;
+  background-color: #F5E6B3;
 }
 
 .neo-page {
   min-height: 100vh;
   padding: 16px;
-  background-color: #F8D6B3;
+  background-color: #F5E6B3;
 }
 
 .neo-header {
-  background-color: #DAF5F0;
+  background-color: #FFFFFF;
   border: 4px solid #000;
   box-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 1);
   padding: 16px;
@@ -55,7 +55,7 @@ body {
 .neo-card {
   border: 4px solid #000;
   box-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 1);
-  background-color: #DAF5F0;
+  background-color: #FFFFFF;
   position: relative;
 }
 
@@ -72,7 +72,7 @@ body {
   text-transform: uppercase;
   cursor: pointer;
   font-family: 'Space Mono', monospace;
-  background-color: #DAF5F0;
+  background-color: #FFFFFF;
   display: inline-block;
   text-align: center;
   line-height: 1.2;
@@ -285,15 +285,15 @@ body {
 }
 
 .bg-neo-background {
-  background-color: #F8D6B3;
+  background-color: #F5E6B3;
 }
 
 .bg-neo-logo {
-  background-color: #FF7A5C;
+  background-color: #FF1493;
 }
 
 .bg-neo-container {
-  background-color: #DAF5F0;
+  background-color: #FFFFFF;
 }
 
 .bg-neo-logout {
@@ -301,7 +301,7 @@ body {
 }
 
 .bg-neo-active-class {
-  background-color: #90EE90;
+  background-color: #FF7A5C;
 }
 
 .bg-neo-inactive-class {
@@ -309,7 +309,7 @@ body {
 }
 
 .bg-neo-classroom-code {
-  background-color: #FFDB58;
+  background-color: #FFD700;
 }
 
 .bg-neo-create-manage {
@@ -322,27 +322,27 @@ body {
 }
 
 .bg-neo-secondary {
-  background-color: #69D2E7;
+  background-color: #DA70D6;
 }
 
 .bg-neo-success {
-  background-color: #90EE90;
+  background-color: #FF7A5C;
 }
 
 .bg-neo-warning {
-  background-color: #FFDB58;
+  background-color: #FFD700;
 }
 
 .bg-neo-error {
-  background-color: #000000;
+  background-color: #FF0000;
 }
 
 .bg-neo-info {
-  background-color: #69D2E7;
+  background-color: #40E0D0;
 }
 
 .bg-neo-surface {
-  background-color: #DAF5F0;
+  background-color: #FFFFFF;
 }
 
 .bg-neo-accent1 {
@@ -350,11 +350,11 @@ body {
 }
 
 .bg-neo-accent2 {
-  background-color: #F8D6B3;
+  background-color: #F5E6B3;
 }
 
 .bg-neo-muted {
-  background-color: #F8D6B3;
+  background-color: #F5E6B3;
 }
 
 .bg-neo-white {
@@ -362,39 +362,39 @@ body {
 }
 
 .bg-neo-yellow {
-  background-color: #FFDB58;
+  background-color: #FFD700;
 }
 
 .bg-neo-red {
-  background-color: #FF7A5C;
+  background-color: #FF0000;
 }
 
 .bg-neo-green {
-  background-color: #90EE90;
+  background-color: #FF7A5C;
 }
 
 .bg-neo-blue {
-  background-color: #69D2E7;
+  background-color: #40E0D0;
 }
 
 .bg-neo-purple {
-  background-color: #FF7A5C;
+  background-color: #DA70D6;
 }
 
 .bg-neo-pink {
-  background-color: #FF7A5C;
+  background-color: #FF69B4;
 }
 
 .bg-neo-orange {
-  background-color: #FF7A5C;
+  background-color: #FF1493;
 }
 
 .bg-neo-cyan {
-  background-color: #69D2E7;
+  background-color: #40E0D0;
 }
 
 .bg-neo-gray {
-  background-color: #F8D6B3;
+  background-color: #F5E6B3;
 }
 
 /* All light color variants mapped to container color */
@@ -412,7 +412,7 @@ body {
 .bg-neo-coral,
 .bg-neo-pink-alt,
 .bg-neo-lavender {
-  background-color: #DAF5F0;
+  background-color: #FFFFFF;
 }
 
 /* Transform utilities */
@@ -424,7 +424,7 @@ body {
 .neo-logo {
   width: 80px;
   height: 80px;
-  background-color: #FF7A5C;
+  background-color: #FF1493;
   border: 4px solid #000;
   display: flex;
   align-items: center;
@@ -448,7 +448,7 @@ body {
   height: 100%;
   transition: width 0.5s ease;
   border-right: 4px solid #000;
-  background-color: #FF7A5C;
+  background-color: #FF1493;
 }
 
 .neo-radio-group {
@@ -460,7 +460,7 @@ body {
 .neo-radio-option {
   padding: 16px;
   border: 4px solid #000;
-  background-color: #DAF5F0;
+  background-color: #FFFFFF;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -468,11 +468,11 @@ body {
 }
 
 .neo-radio-option:hover {
-  background-color: #F8D6B3;
+  background-color: #F5E6B3;
 }
 
 .neo-radio-option.selected {
-  background-color: #FF7A5C;
+  background-color: #FF1493;
   color: white;
 }
 
@@ -498,11 +498,11 @@ body {
 }
 
 .neo-status-online {
-  background-color: #90EE90;
+  background-color: #FF7A5C;
 }
 
 .neo-status-offline {
-  background-color: #FF7A5C;
+  background-color: #FF0000;
 }
 
 /* Animations */
@@ -528,7 +528,7 @@ body {
 }
 
 .neo-btn-secondary {
-  background-color: #69D2E7;
+  background-color: #DA70D6;
   color: black;
 }
 
@@ -538,23 +538,116 @@ body {
 }
 
 .neo-btn-warning {
-  background-color: #FFDB58;
+  background-color: #FFD700;
   color: black;
 }
 
 .neo-btn-error {
-  background-color: #000000;
+  background-color: #FF0000;
   color: white;
 }
 
 .neo-btn-info {
-  background-color: #69D2E7;
+  background-color: #40E0D0;
   color: black;
 }
 
 .neo-btn-muted {
-  background-color: #F8D6B3;
+  background-color: #F5E6B3;
   color: black;
+}
+
+/* Specific button types */
+.neo-btn-logout {
+  background-color: #000000;
+  color: #FFFFFF;
+}
+
+.neo-btn-login {
+  background-color: #FF1493;
+  color: #FFFFFF;
+}
+
+.neo-btn-create-manage {
+  background-color: #69D2E7;
+  color: #000000;
+  max-width: 400px;
+}
+
+.neo-btn-export {
+  background-color: #F5E6B3;
+  color: #000000;
+}
+
+/* Status badges */
+.neo-status-badge {
+  padding: 4px 8px;
+}
+
+.neo-status-active {
+  background-color: #FF7A5C;
+  color: #000000;
+}
+
+.neo-status-inactive {
+  background-color: #000000;
+  color: #FFFFFF;
+}
+
+/* Layout utilities */
+.neo-container-centered {
+  margin: 0 auto;
+}
+
+.neo-card-relative {
+  position: relative;
+}
+
+.neo-badge-absolute {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+.neo-class-title {
+  margin-right: 120px;
+}
+
+.neo-class-info {
+  line-height: 1.6;
+}
+
+.neo-class-info-item {
+  margin: 4px 0;
+}
+
+.neo-classroom-code-badge {
+  padding: 4px 8px;
+  color: #000000;
+}
+
+/* Modal styles */
+.neo-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.neo-modal-content {
+  max-width: 500px;
+  width: 90%;
+}
+
+/* Input styles */
+.neo-input-no-transform {
+  text-transform: none;
 }
 
 /* Responsive design */

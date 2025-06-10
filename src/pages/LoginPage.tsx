@@ -63,6 +63,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
           <button
             onClick={handleTeacherLogin}
             className="neo-btn neo-btn-primary neo-w-full"
+            style={{ backgroundColor: '#FF1493', color: 'white' }}
           >
             Login
           </button>

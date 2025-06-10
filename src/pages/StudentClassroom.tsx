@@ -313,7 +313,7 @@ const StudentClassroom: React.FC<StudentClassroomProps> = ({
                           className="neo-progress-fill" 
                           style={{ 
                             width: `${result.percentage}%`,
-                            backgroundColor: isUserAnswer ? '#9723C9' : '#B5D2AD'
+                            backgroundColor: isUserAnswer ? '#00FF00' : '#FF0000'
                           }}
                         ></div>
                       </div>

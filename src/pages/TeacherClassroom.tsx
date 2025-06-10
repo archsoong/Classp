@@ -306,6 +306,7 @@ const TeacherClassroom: React.FC<TeacherClassroomProps> = ({
           <button
             onClick={toggleClassStatus}
             className={`neo-btn ${classStatus.status === 'preparing' ? 'neo-btn-success' : classStatus.status === 'active' ? 'neo-btn-error' : 'neo-btn-muted'}`}
+            style={{ backgroundColor: '#90EE90', color: 'black' }}
             disabled={classStatus.status === 'ended'}
           >
             {getStatusButtonText()}
@@ -375,6 +376,7 @@ const TeacherClassroom: React.FC<TeacherClassroomProps> = ({
               <button
                 onClick={showQuestionFormHandler}
                 className="neo-btn neo-btn-primary"
+                style={{ backgroundColor: '#69D2E7', color: 'black' }}
               >
                 + Add Question
               </button>
@@ -388,7 +390,7 @@ const TeacherClassroom: React.FC<TeacherClassroomProps> = ({
                 <div 
                   key={question.id} 
                   className="neo-card neo-p-4"
-                  style={{ cursor: 'grab', border: '2px solid #ccc', backgroundColor: 'white' }}
+                  style={{ cursor: 'grab', border: '2px solid #000', backgroundColor: '#FFFFFF' }}
                   draggable
                   onDragStart={(e) => e.dataTransfer.setData('text/plain', index.toString())}
                   onDragOver={(e) => e.preventDefault()}
@@ -401,7 +403,7 @@ const TeacherClassroom: React.FC<TeacherClassroomProps> = ({
                   <div className="neo-flex-between neo-mb-2">
                     <div className="neo-flex" style={{ alignItems: 'center', gap: '8px' }}>
                       <span className="neo-font-bold">#{question.queue_order}</span>
-                      <span style={{ fontSize: '14px', color: '#666' }}>
+                      <span style={{ fontSize: '14px', color: '#000' }}>
                         {question.type === 'mc' ? 'Multiple Choice' : 'Short Answer'}
                       </span>
                     </div>
@@ -428,6 +430,7 @@ const TeacherClassroom: React.FC<TeacherClassroomProps> = ({
                   <button
                     onClick={() => publishQuestion(question)}
                     className="neo-btn neo-btn-success neo-w-full"
+                    style={{ backgroundColor: '#90EE90', color: 'black' }}
                     disabled={classStatus.status !== 'active' || activeQuestion !== null}
                   >
                     Publish
@@ -528,7 +531,7 @@ const TeacherClassroom: React.FC<TeacherClassroomProps> = ({
           <div>
             {activeQuestion ? (
               /* Active Question Display */
-              <div className="neo-card neo-p-6 bg-neo-accent1" style={{ border: '4px solid black', backgroundColor: '#FFF59D' }}>
+              <div className="neo-card neo-p-6 bg-neo-accent1" style={{ border: '4px solid black', backgroundColor: '#FFD700' }}>
                 <div className="neo-flex-between neo-mb-4">
                   <h2 className="neo-text-2xl neo-font-black">Active Question</h2>
                   <button
