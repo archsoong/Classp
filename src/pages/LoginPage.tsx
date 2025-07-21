@@ -1,35 +1,52 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { apiService } from '../services/api';
 
 interface LoginPageProps {
   onLogin: (userType: 'teacher' | 'student', userId: string, classCode?: string) => void;
 }
 
 const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
-  const { t } = useTranslation(); // Add i18n translation hook
+  const { t } = useTranslation();
   const [teacherId, setTeacherId] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   // Validate teacher ID format (alphanumeric, 3-20 chars)
   const validateTeacherId = (id: string): boolean => {
     return /^[a-zA-Z0-9]{3,20}$/.test(id);
   };
 
-  const handleTeacherLogin = () => {
+  const handleTeacherLogin = async () => {
     setError('');
+    setIsLoading(true);
     
     if (!teacherId.trim()) {
       setError(t('validation.required'));
+      setIsLoading(false);
       return;
     }
     
     if (!validateTeacherId(teacherId)) {
-      setError('Teacher ID must be 3-20 alphanumeric characters'); // Keep technical validation in English
+      setError('Teacher ID must be 3-20 alphanumeric characters');
+      setIsLoading(false);
       return;
     }
     
-    // Simulate teacher authentication - in real app, this would check against database
-    onLogin('teacher', teacherId);
+    try {
+      const response = await apiService.login(teacherId);
+      
+      if (response.success && response.teacher) {
+        onLogin('teacher', response.teacher.id);
+      } else {
+        setError(response.message || 'Login failed');
+      }
+    } catch (error) {
+      setError('Login failed. Please check your connection and try again.');
+      console.error('Login error:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -65,10 +82,11 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
           
           <button
             onClick={handleTeacherLogin}
+            disabled={isLoading}
             className="neo-btn neo-btn-primary neo-w-full"
-            style={{ backgroundColor: '#FF1493', color: 'white' }}
+            style={{ backgroundColor: '#FF1493', color: 'white', opacity: isLoading ? 0.6 : 1 }}
           >
-            {t('login.enterAsTeacher')}
+            {isLoading ? 'Logging in...' : t('login.enterAsTeacher')}
           </button>
         </div>
 

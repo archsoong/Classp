@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { apiService } from '../services/api';
 
 interface StudentJoinPageProps {
   classCode?: string;
@@ -18,6 +19,7 @@ const StudentJoinPage: React.FC<StudentJoinPageProps> = ({
   const [classCode, setClassCode] = useState(initialClassCode);
   const [classState, setClassState] = useState<ClassState>('loading');
   const [error, setError] = useState('');
+  const [isJoining, setIsJoining] = useState(false);
 
   // Simulate checking class status
   useEffect(() => {
@@ -28,16 +30,24 @@ const StudentJoinPage: React.FC<StudentJoinPageProps> = ({
     }
   }, [classCode]);
 
-  const checkClassStatus = (code: string) => {
+  const checkClassStatus = async (code: string) => {
     setClassState('loading');
+    setError('');
     
-    // Simulate API call to check class status
-    setTimeout(() => {
-      // Mock class status logic - in real app, this would be an API call
-      const mockStatuses = ['active', 'ended', 'not-started'];
-      const randomStatus = mockStatuses[Math.floor(Math.random() * mockStatuses.length)];
-      setClassState(randomStatus as ClassState);
-    }, 1000);
+    try {
+      const classData = await apiService.getClass(code);
+      
+      if (classData.status === 'active') {
+        setClassState('active');
+      } else if (classData.status === 'ended') {
+        setClassState('ended');
+      } else if (classData.status === 'preparing') {
+        setClassState('not-started');
+      }
+    } catch {
+      setError('Class not found or invalid class code');
+      setClassState('active'); // Allow retry
+    }
   };
 
   const validateInputs = (): boolean => {
@@ -56,16 +66,33 @@ const StudentJoinPage: React.FC<StudentJoinPageProps> = ({
     return true;
   };
 
-  const handleJoinClass = () => {
+  const handleJoinClass = async () => {
     setError('');
+    setIsJoining(true);
     
     if (!validateInputs()) {
+      setIsJoining(false);
       return;
     }
 
-    // Check for duplicate student (mock implementation)
-    // In real app, this would be an API call
-    onJoinClass(studentName, studentId, classCode);
+    try {
+      const response = await apiService.joinClass({
+        code: classCode,
+        studentName,
+        studentId,
+      });
+
+      if (response.success) {
+        onJoinClass(studentName, studentId, classCode);
+      } else {
+        setError(response.message || 'Failed to join class');
+      }
+    } catch (error) {
+      setError('Failed to join class. Please try again.');
+      console.error('Error joining class:', error);
+    } finally {
+      setIsJoining(false);
+    }
   };
 
   const handleRefresh = () => {
@@ -106,9 +133,11 @@ const StudentJoinPage: React.FC<StudentJoinPageProps> = ({
 
       <button
         onClick={handleJoinClass}
+        disabled={isJoining}
         className="neo-btn neo-btn-success neo-w-full neo-mb-4"
+        style={{ opacity: isJoining ? 0.6 : 1 }}
       >
-        Join Class
+        {isJoining ? 'Joining...' : 'Join Class'}
       </button>
     </>
   );

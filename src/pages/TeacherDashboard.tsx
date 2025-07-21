@@ -1,16 +1,6 @@
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-
-interface Class {
-  id: string;
-  name: string;
-  code: string;
-  students: number;
-  lastActive: string;
-  questions: number;
-  status: 'preparing' | 'active' | 'ended';
-  createdAt: string;
-}
+import React, { useState, useEffect } from 'react';
+import { apiService } from '../services/api';
+import type { Class } from '../types/api';
 
 interface TeacherDashboardProps {
   teacherId: string;
@@ -19,56 +9,33 @@ interface TeacherDashboardProps {
 }
 
 const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
-  teacherId,
-  onLogout,
   onEnterClass,
 }) => {
-  const { t } = useTranslation(); // Add i18n translation hook
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [className, setClassName] = useState('');
   const [activeTab, setActiveTab] = useState<'active' | 'past'>('active');
-  const [classes, setClasses] = useState<Class[]>([
-    {
-      id: '1',
-      name: 'MATH 101',
-      code: 'ABC123',
-      students: 25,
-      lastActive: '2 hours ago',
-      questions: 15,
-      status: 'active',
-      createdAt: '2024-01-15',
-    },
-    {
-      id: '2',
-      name: 'SCIENCE 202',
-      code: 'XYZ789',
-      students: 30,
-      lastActive: 'Yesterday',
-      questions: 8,
-      status: 'ended',
-      createdAt: '2024-01-14',
-    },
-    {
-      id: '3',
-      name: 'HISTORY 101',
-      code: 'HIJ456',
-      students: 0,
-      lastActive: 'Never',
-      questions: 0,
-      status: 'preparing',
-      createdAt: '2024-01-16',
-    },
-  ]);
+  const [classes, setClasses] = useState<Class[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  // Generate unique 8-character class code
-  const generateClassCode = (): string => {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let result = '';
-    for (let i = 0; i < 8; i++) {
-      result += chars.charAt(Math.floor(Math.random() * chars.length));
+  useEffect(() => {
+    loadClasses();
+  }, []);
+
+  const loadClasses = async () => {
+    try {
+      setIsLoading(true);
+      setError('');
+      const classData = await apiService.getTeacherClasses();
+      setClasses(classData);
+    } catch (error) {
+      setError('Failed to load classes');
+      console.error('Error loading classes:', error);
+    } finally {
+      setIsLoading(false);
     }
-    return result;
   };
+
 
   const showCreateClassModal = () => {
     setShowCreateModal(true);
@@ -80,25 +47,24 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
     setClassName('');
   };
 
-  const createNewClass = () => {
+  const createNewClass = async () => {
     if (!className.trim()) {
       alert('Please enter a class name');
       return;
     }
 
-    const newClass: Class = {
-      id: Date.now().toString(),
-      name: className.toUpperCase(),
-      code: generateClassCode(),
-      students: 0,
-      lastActive: 'Just created',
-      questions: 0,
-      status: 'preparing',
-      createdAt: new Date().toISOString().split('T')[0] || '',
-    };
-
-    setClasses([newClass, ...classes]);
-    closeModal();
+    try {
+      const response = await apiService.createClass({ className });
+      if (response.success && response.class) {
+        setClasses([response.class, ...classes]);
+        closeModal();
+      } else {
+        alert(response.message || 'Failed to create class');
+      }
+    } catch (error) {
+      alert('Failed to create class. Please try again.');
+      console.error('Error creating class:', error);
+    }
   };
 
   const exportClassData = (classItem: Class) => {
@@ -115,7 +81,7 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
     const url = URL.createObjectURL(dataBlob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `${classItem.name}_${classItem.code}_export.json`;
+    link.download = `${classItem.className}_${classItem.code}_export.json`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -182,8 +148,22 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
           </div>
         </div>
 
-        {/* Classes Grid */}
-        {getFilteredClasses().length === 0 ? (
+        {/* Loading State */}
+        {isLoading ? (
+          <div className="neo-card neo-p-8 neo-text-center bg-neo-surface">
+            <p className="neo-text-xl neo-font-bold">Loading classes...</p>
+          </div>
+        ) : error ? (
+          <div className="neo-card neo-p-8 neo-text-center bg-neo-surface">
+            <p className="neo-text-xl neo-font-bold neo-text-error">{error}</p>
+            <button 
+              onClick={loadClasses}
+              className="neo-btn neo-btn-primary neo-mt-4"
+            >
+              Retry
+            </button>
+          </div>
+        ) : getFilteredClasses().length === 0 ? (
           <div className="neo-card neo-p-8 neo-text-center bg-neo-surface">
             <p className="neo-text-xl neo-font-bold neo-mb-4">
               {activeTab === 'active' ? 'No active classes. Create your first class to get started!' : 'No past classes yet.'}
@@ -201,7 +181,7 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
 
                 {/* Class name */}
                 <div className="neo-mb-4">
-                  <h4 className="neo-text-2xl neo-font-black neo-class-title">{classItem.name}</h4>
+                  <h4 className="neo-text-2xl neo-font-black neo-class-title">{classItem.className}</h4>
                 </div>
 
                 <div className="neo-mb-4 neo-class-info">
@@ -213,7 +193,7 @@ const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
                   </p>
 
                   <p className="neo-class-info-item">
-                    <span className="neo-font-bold">Date:</span> {classItem.createdAt} • <span className="neo-font-bold">{classItem.questions} questions</span> • <span className="neo-font-bold">Students:</span> {classItem.students}
+                    <span className="neo-font-bold">Date:</span> {new Date(classItem.createdAt).toLocaleDateString()} • <span className="neo-font-bold">Students:</span> {classItem.participantCount}
                   </p>
                 </div>
 
